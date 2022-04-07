@@ -24,6 +24,7 @@ public class ReserveTest {
     @Test
     public void booking() throws InterruptedException {
         Reserve bookWithoutCard = new Reserve(driver);
+        Thread.sleep(60000);
         bookWithoutCard.selectDestination("Batumi");
         bookWithoutCard.clickArrive();
         bookWithoutCard.selectArriveData("June 2022", "5");
