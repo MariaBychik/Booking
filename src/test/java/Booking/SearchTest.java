@@ -23,7 +23,7 @@ public class SearchTest {
         driver.get("https://www.booking.com");
     }
 
-    @Test  (priority = 2)
+    @Test(priority = 2)
     public void dataInputSearch() {
         Search validSearch = new Search(driver);
         validSearch.selectDestination("Maldives");
@@ -43,7 +43,7 @@ public class SearchTest {
     }
 
 
-    @Test (priority = 3)
+    @Test(priority = 3)
     public void searchFilterUsing() {
         Search filterSearch = new Search(driver);
         filterSearch.mealsSelect("All-inclusive");
@@ -54,14 +54,14 @@ public class SearchTest {
     }
 
 
-    @Test (priority = 1)
+    @Test(priority = 1)
     public void searchCarRentals() {
         Search carRentals = new Search(driver);
 
         carRentals.selectCarTab();
         carRentals.selectLocation("France");
         carRentals.selectDataCarRent();
-        carRentals.selectCarRentDataA("August 2022", "15", "12","30");
+        carRentals.selectCarRentDataA("August 2022", "15", "12", "30");
         carRentals.selectCarRentDataD("16", "11", "45");
         carRentals.searchCar();
 
@@ -69,6 +69,20 @@ public class SearchTest {
         String actUrl = driver.getCurrentUrl();
         Assert.assertTrue(actUrl.contains(expUrl));
         carRentals.returnHomePage();
+    }
+
+    @Test(priority = 4)
+    public void searchAttractions() {
+        Search attractions = new Search(driver);
+        attractions.selectAttractions();
+        attractions.selectDestination();
+        attractions.selectAttractionFilter("Amsterdam");
+        attractions.selectAttraction();
+
+        String expUrl = "https://www.booking.com/attractions";
+        String actUrl = driver.getCurrentUrl();
+        Assert.assertTrue(actUrl.contains(expUrl));
+
     }
 
     @AfterSuite

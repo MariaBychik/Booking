@@ -87,6 +87,15 @@ public class Search {
     @FindBy(xpath = "//span[@class='bbdb949247']")
     WebElement checkBox;
 
+    @FindBy(xpath = "(//span[@class='bui-tab__text'])[4]")
+    WebElement attractionsButton;
+
+    @FindBy(xpath = "(//div[@class='cad6d4c495'])[8]")
+    WebElement destinationTab;
+
+    @FindBy(xpath = "(//span[@class='_082e45fe75'])[7]")
+    WebElement viewButton;
+
 
     public void selectDestination(String strDestin) {
         destinationTextBox.sendKeys(strDestin);
@@ -262,6 +271,25 @@ public class Search {
         public void searchCar() {
             searchCarButton.click();
         }
+
+        public void selectAttractions(){
+            attractionsButton.click();
+        }
+
+        public void selectDestination(){
+          destinationTab.click();
+        }
+
+    public void selectAttractionFilter(String city) {
+        String xpath = "//div[@class='_85d06581c8']/descendant::*[contains(text(), '%s')]";
+        if (!driver.findElement(By.xpath(String.format(xpath, city))).isSelected()) {
+            driver.findElement(By.xpath(String.format(xpath, city))).click();
+        }
+    }
+
+    public void selectAttraction(){
+        viewButton.click();
+    }
 
 
 }
