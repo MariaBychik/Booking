@@ -40,11 +40,10 @@ public class ReserveTest {
         Assert.assertTrue(actUrl.contains(expUrl));
 
     }
-}
-/*
+
+
     @AfterSuite
     public void TeardownTest() {
         ReserveTest.driver.quit();
     }
 }
-*/
