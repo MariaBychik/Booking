@@ -16,6 +16,9 @@ public class Reserve{
         this.driver = driver;
     }
 
+    @FindBy(xpath="//button[@id='onetrust-accept-btn-handler']")
+    WebElement acceptButton;
+
     @FindBy(xpath = "//*[@name='ss']")
     WebElement destinationTextBox;
 
@@ -31,7 +34,7 @@ public class Reserve{
     @FindBy(xpath = "//button[@class='sb-searchbox__button ']")
     WebElement searchButton;
 
-    @FindBy(xpath = "(//div[@data-testid='title'])[4]")
+    @FindBy(xpath = "(//div[@data-testid='title'])[1]")
     WebElement searchResults;
 
     @FindBy(xpath = "(//span[@class='bui-button__text'])[20]")
@@ -42,6 +45,33 @@ public class Reserve{
 
     @FindBy(xpath = "(//select[@class='hprt-nos-select js-hprt-nos-select'])[1]")
     WebElement dropDownRoomButton;
+
+    @FindBy(xpath = "//input[@id='firstname']")
+    WebElement firstNameField;
+
+    @FindBy(xpath="//input[@id='lastname']")
+    WebElement lastNameField;
+
+    @FindBy(xpath="//input[@id='email']")
+    WebElement emailField;
+
+    @FindBy(xpath="//input[@id='email_confirm']")
+    WebElement emailConfField;
+
+    @FindBy(xpath = "(//span[@class='bui-radio__label'])[3]")
+    WebElement radioButton;
+
+    @FindBy(xpath = "//button[@name='book']")
+    WebElement bookButton;
+
+    @FindBy (xpath = "//input[@id='phone']")
+    WebElement phoneTextBox;
+
+    @FindBy (xpath = "(//span[@class='bui-button__text js-button__text'])[2]")
+    WebElement completeButton;
+
+
+    public void acceptCookie(){acceptButton.click();}
 
     public void selectDestination(String strDestin) {
         destinationTextBox.sendKeys(strDestin);
@@ -103,7 +133,7 @@ public class Reserve{
 
     public void selectRoom(String expCountRoom){
         dropDownRoomButton.click();
-        String selectCountRoom = "(//option[@value='%s'])[5]";
+        String selectCountRoom = "(//select[@class='hprt-nos-select js-hprt-nos-select'])[1]/descendant::*[contains(text(),'%s')][1]";
         if (!driver.findElement(By.xpath(String.format(selectCountRoom, expCountRoom))).isSelected())
             driver.findElement(By.xpath(String.format(selectCountRoom, expCountRoom))).click();
     }
@@ -111,5 +141,41 @@ public class Reserve{
     public void reserveConfirm(){
         reserveConfirmButton.click();
     }
+
+    public void fillInFirstNameData(String fName){
+        firstNameField.sendKeys(fName);
+    }
+
+    public void fillInLastNameData(String lName){
+        lastNameField.sendKeys(lName);
+    }
+
+    public void fillInEmail(String emailF){
+        emailField.sendKeys(emailF);
+    }
+
+    public void confirmEmail(String emailC){
+        emailConfField.sendKeys(emailC);
+    }
+
+    public void selectBookingAim(){
+        radioButton.click();
+    }
+
+    public void bookSubmit(){
+        bookButton.click();
+    }
+
+    public void fillInPhone(String phoneNumber){
+        phoneTextBox.sendKeys(phoneNumber);
+    }
+
+    public void completeBooking(){
+        completeButton.click();
+
+    }
+
+
+
 
 }

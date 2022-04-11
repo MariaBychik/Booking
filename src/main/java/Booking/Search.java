@@ -6,7 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 
 public class Search {
@@ -17,6 +19,8 @@ public class Search {
         PageFactory.initElements(driver, this);
         this.driver = driver;
     }
+    @FindBy(xpath="//button[@id='onetrust-accept-btn-handler']")
+    WebElement acceptButton;
 
     @FindBy(xpath = "//*[@name='ss']")
     WebElement destinationTextBox;
@@ -54,7 +58,7 @@ public class Search {
     @FindBy(xpath = "//button[@class='sb-searchbox__button ']")
     WebElement searchButton;
 
-    @FindBy(xpath = "(//li[@class='bui-tab__item'])[3]")
+    @FindBy(xpath = "(//span[@class='bui-tab__text'])[4]")
     WebElement carTab;
 
     @FindBy(xpath = "//input[@type='search']")
@@ -87,7 +91,7 @@ public class Search {
     @FindBy(xpath = "//span[@class='bbdb949247']")
     WebElement checkBox;
 
-    @FindBy(xpath = "(//span[@class='bui-tab__text'])[4]")
+    @FindBy(xpath = "(//span[@class='bui-tab__text'])[5]")
     WebElement attractionsButton;
 
     @FindBy(xpath = "(//div[@class='cad6d4c495'])[8]")
@@ -96,6 +100,7 @@ public class Search {
     @FindBy(xpath = "(//span[@class='_082e45fe75'])[7]")
     WebElement viewButton;
 
+    public void acceptCookie(){acceptButton.click();}
 
     public void selectDestination(String strDestin) {
         destinationTextBox.sendKeys(strDestin);
@@ -190,17 +195,19 @@ public class Search {
         searchButton.click();
     }
 
+
     public void mealsSelect(String meals) {
-        String xpath = "//div[@data-filters-group='mealplan']/descendant::*[contains(text(), '%s')]";
+     String xpath = "//div[@data-filters-group='mealplan']/descendant::*[contains(text(), '%s')]";
         if (!driver.findElement(By.xpath(String.format(xpath, meals))).isSelected()) {
             driver.findElement(By.xpath(String.format(xpath, meals))).click();
         }
     }
 
-    public void returnHomePage() {driver.navigate().to("https://www.booking.com");;}
+    public void returnHomePage() {
+        driver.navigate().to("https://www.booking.com");}
 
 
-    public void selectCarTab() {
+    public void selectCarTab()  {
         carTab.click();
     }
 
@@ -219,7 +226,6 @@ public class Search {
             if (startCarRentMonth.equals(expStartCarRentMonth)) {
                 break;
             } else {
-                nextButton1.click();
                 nextButton1.click();
             }
         }
@@ -242,31 +248,12 @@ public class Search {
         String selectArriveMinute = "(//option[@value='%s'])[1]";
         if (!driver.findElement(By.xpath(String.format(selectArriveMinute, expArriveMinute))).isSelected())
             driver.findElement(By.xpath(String.format(selectArriveMinute, expArriveMinute))).click();
-
     }
 
 
-    public void selectCarRentDataD(String expEndCarRentDay, String expDepartureHour, String expDepartureMinute) {
-        List<WebElement> cell = driver.findElements(By.xpath("//tbody[1]//tr//td//span"));
-        for (WebElement elem : cell) {
-            String dateStartRentCar = elem.getText();
-            if (dateStartRentCar.equals(expEndCarRentDay)) {
-                elem.click();
-                break;
-            }
-        }
 
-        carDataField.click();
-        checkOutTimeHour.click();
-        String selectDepartureTime = "(//option[@value='%s'])[2]";
-        if (!driver.findElement(By.xpath(String.format(selectDepartureTime, expDepartureHour))).isSelected())
-            driver.findElement(By.xpath(String.format(selectDepartureTime, expDepartureHour))).click();
 
-        checkOutTimeMinutes.click();
-        String selectDepartureMinute = "(//option[@value='%s'])[2]";
-        if (!driver.findElement(By.xpath(String.format(selectDepartureMinute, expDepartureMinute))).isSelected())
-            driver.findElement(By.xpath(String.format(selectDepartureMinute, expDepartureMinute))).click();
-    }
+
 
         public void searchCar() {
             searchCarButton.click();
@@ -280,7 +267,7 @@ public class Search {
           destinationTab.click();
         }
 
-    public void selectAttractionFilter(String city) {
+        public void selectAttractionFilter(String city) {
         String xpath = "//div[@class='_85d06581c8']/descendant::*[contains(text(), '%s')]";
         if (!driver.findElement(By.xpath(String.format(xpath, city))).isSelected()) {
             driver.findElement(By.xpath(String.format(xpath, city))).click();

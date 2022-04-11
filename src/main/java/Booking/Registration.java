@@ -2,7 +2,6 @@ package Booking;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
@@ -14,8 +13,11 @@ public class Registration {
         this.driver = driver;
     }
 
-    @FindBy(xpath = "(//span[@class='bui-button__text'])[4]")
-    WebElement registerButton;
+    @FindBy(xpath="//button[@id='onetrust-accept-btn-handler']")
+    WebElement acceptButton;
+
+    @FindBy(xpath = "(//a[@class='bui-button bui-button--secondary js-header-login-link'])[2]")
+    WebElement signInButton;
 
     @FindBy(xpath = "//input[@type='email']")
     WebElement inputTextBox;
@@ -29,14 +31,10 @@ public class Registration {
     @FindBy(xpath = "//input[@id='confirmed_password']")
     WebElement passwordConfirmedField;
 
-    @FindBy(xpath = "//input[@id='password']")
-    WebElement passwordField;
-
-    @FindBy(xpath = "//div[id='eMxPFJBcbVsXszt']")
-    WebElement holdButton;
+    public void acceptCookie(){acceptButton.click();}
 
     public void registerPage() {
-        registerButton.click();
+        signInButton.click();
     }
 
     public void inputEmail(String email) {
@@ -55,17 +53,9 @@ public class Registration {
         passwordConfirmedField.sendKeys(passwordConf);
     }
 
-    public void holdConfirmButton() {
-        Actions actionProvider = new Actions(driver);
-        actionProvider.clickAndHold(holdButton).build().perform();
+
     }
 
-    public void selectPassword(String passwordInp) {
-        {
-            passwordField.sendKeys(passwordInp);
-        }
-    }
-}
 
 
 
