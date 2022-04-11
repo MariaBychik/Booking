@@ -53,7 +53,6 @@ public class ReserveTest {
 
     }
 
-
     @AfterSuite
     public void TeardownTest() {
         ReserveTest.driver.quit();

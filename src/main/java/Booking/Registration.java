@@ -53,7 +53,6 @@ public class Registration {
         passwordConfirmedField.sendKeys(passwordConf);
     }
 
-
     }
 
 

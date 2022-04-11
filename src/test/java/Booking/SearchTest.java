@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
@@ -50,9 +49,6 @@ public class SearchTest {
         validSearch.returnHomePage();
     }
 
-
-
-
     @Test
     //Search cars with valid values without authorization in the account
     public void searchCarRentals() {
@@ -66,8 +62,6 @@ public class SearchTest {
         WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(40))
                 .until(driver -> driver.findElement(By.xpath("//div[@data-testid='page-title']")));
         assertEquals(confirm.getText().contains("cars available"), true);
-
-
     }
 
     @Test
@@ -84,7 +78,6 @@ public class SearchTest {
         assertEquals(confirm.getText().contains("Attractions"), true);
 
         attractions.returnHomePage();
-
     }
 
     @AfterSuite
