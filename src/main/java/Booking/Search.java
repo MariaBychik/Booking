@@ -63,7 +63,7 @@ public class Search {
     @FindBy(xpath = "//button[@class='sb-searchbox__button ']")
     WebElement searchButton;
 
-    @FindBy(xpath = "(//span[@class='bui-tab__text'])[4]")
+    @FindBy(xpath = "//*[contains(text(), 'Car rentals')]")
     WebElement carTab;
 
     @FindBy(xpath = "//input[@type='search']")
@@ -78,16 +78,10 @@ public class Search {
     @FindBy(xpath = "(//span[@class='c2-button-inner'])[2]")
     WebElement nextButton1;
 
-    @FindBy(xpath = "//select[@name='checkinTime']")
-    WebElement checkInTimeHour;
-
-    @FindBy(xpath = "//select[@name='checkinTimeMinutes']")
-    WebElement checkInTimeMinutes;
-
     @FindBy(xpath = "//button[@class='sb-searchbox__button ']")
     WebElement searchCarButton;
 
-    @FindBy(xpath = "(//span[@class='bui-tab__text'])[5]")
+    @FindBy(xpath = "//*[contains(text(), 'Attractions')]")
     WebElement attractionsButton;
 
     @FindBy(xpath = "(//div[@class='cad6d4c495'])[8]")
@@ -218,8 +212,9 @@ public class Search {
 
 
     public void selectCarTab()  {
-        carTab.click();
-    }
+            carTab.click();
+        }
+
 
     public void selectLocation(String strLocation) {
         carSearchField.sendKeys(strLocation);
@@ -250,21 +245,20 @@ public class Search {
         }
     }
 
-
-
         public void searchCar() {
             searchCarButton.click();
         }
 
         public void confirmA(){
-            WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(40))
-                    .until(driver -> driver.findElement(By.xpath("//div[@data-testid='page-title']")));
-            assertEquals(confirm.getText().contains("cars available"), true);
+            WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(50))
+                    .until(driver -> driver.findElement(By.xpath("//form[@name='SearchResultsForm']")));
+            assertEquals(confirm.getText().contains("find"), true);
         }
 
         public void selectAttractions(){
-            attractionsButton.click();
+           attractionsButton.click();
         }
+
 
         public void selectDestination(){
           destinationTab.click();
