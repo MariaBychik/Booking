@@ -30,9 +30,9 @@ public class RegistrationTest {
     @Test
     //Registration with valid email address
     public void validRegistrationTest() {
-        String email = "ragvelofo@mail.ru";
-        String passwordNew = "4365Euyt7Dgr";
-        String passwordConf = "4365Euyt7Dgr";
+        String email = "ragvelvjofo@mail.ru";
+        String passwordNew = "1Wuyt7D65Egr";
+        String passwordConf = "1Wuyt7D65Egr";
 
         Registration validSearch = new Registration(driver);
         validSearch.acceptCookie();
@@ -47,6 +47,6 @@ public class RegistrationTest {
 
     @AfterSuite
     public void TeardownTest() {
-        SearchTest.driver.quit();
+        RegistrationTest.driver.quit();
     }
 }
