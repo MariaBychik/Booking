@@ -1,15 +1,19 @@
 package Booking;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.time.Duration;
 import java.util.List;
+
+import static org.testng.Assert.assertEquals;
+
 
 public class Search {
 
@@ -19,6 +23,7 @@ public class Search {
         PageFactory.initElements(driver, this);
         this.driver = driver;
     }
+
     @FindBy(xpath="//button[@id='onetrust-accept-btn-handler']")
     WebElement acceptButton;
 
@@ -79,17 +84,8 @@ public class Search {
     @FindBy(xpath = "//select[@name='checkinTimeMinutes']")
     WebElement checkInTimeMinutes;
 
-    @FindBy(xpath = "//select[@name='checkoutTime']")
-    WebElement checkOutTimeHour;
-
-    @FindBy(xpath = "//select[@name='checkoutTimeMinutes']")
-    WebElement checkOutTimeMinutes;
-
     @FindBy(xpath = "//button[@class='sb-searchbox__button ']")
     WebElement searchCarButton;
-
-    @FindBy(xpath = "//span[@class='bbdb949247']")
-    WebElement checkBox;
 
     @FindBy(xpath = "(//span[@class='bui-tab__text'])[5]")
     WebElement attractionsButton;
@@ -100,7 +96,15 @@ public class Search {
     @FindBy(xpath = "(//span[@class='_082e45fe75'])[7]")
     WebElement viewButton;
 
-    public void acceptCookie(){acceptButton.click();}
+    public void acceptCookie() {
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='onetrust-banner-sdk']")));
+            acceptButton.click();
+        }
+        catch(TimeoutException e) {
+
+        }
+    }
 
     public void selectDestination(String strDestin) {
         destinationTextBox.sendKeys(strDestin);
@@ -203,6 +207,12 @@ public class Search {
         }
     }
 
+    public void confirm(){
+        WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> driver.findElement(By.xpath("//div[@class='efdb2b543b']")));
+        assertEquals(confirm.getText().contains("properties found"), true);
+    }
+
     public void returnHomePage() {
         driver.navigate().to("https://www.booking.com");}
 
@@ -220,7 +230,7 @@ public class Search {
         carDataField.click();
     }
 
-    public void selectCarRentDataA(String expStartCarRentMonth, String expStartCarRentDay, String expArriveHour, String expArriveMinute) {
+    public void selectCarRentDataA(String expStartCarRentMonth, String expStartCarRentDay) {
         while (true) {
             String startCarRentMonth = monthRentCar.getText();
             if (startCarRentMonth.equals(expStartCarRentMonth)) {
@@ -238,25 +248,18 @@ public class Search {
                 break;
             }
         }
-
-        checkInTimeHour.click();
-        String selectArriveTime = "(//option[@value='%s'])[1]";
-        if (!driver.findElement(By.xpath(String.format(selectArriveTime, expArriveHour))).isSelected())
-            driver.findElement(By.xpath(String.format(selectArriveTime, expArriveHour))).click();
-
-        checkInTimeMinutes.click();
-        String selectArriveMinute = "(//option[@value='%s'])[1]";
-        if (!driver.findElement(By.xpath(String.format(selectArriveMinute, expArriveMinute))).isSelected())
-            driver.findElement(By.xpath(String.format(selectArriveMinute, expArriveMinute))).click();
     }
-
-
-
 
 
 
         public void searchCar() {
             searchCarButton.click();
+        }
+
+        public void confirmA(){
+            WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(40))
+                    .until(driver -> driver.findElement(By.xpath("//div[@data-testid='page-title']")));
+            assertEquals(confirm.getText().contains("cars available"), true);
         }
 
         public void selectAttractions(){
@@ -276,6 +279,12 @@ public class Search {
 
     public void selectAttraction(){
         viewButton.click();
+    }
+
+    public void confirmB(){
+        WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(40))
+                .until(driver -> driver.findElement(By.xpath("//nav[@class='_806745cd2f']")));
+        assertEquals(confirm.getText().contains("Attractions"), true);
     }
 
 

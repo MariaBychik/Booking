@@ -30,19 +30,19 @@ public class RegistrationTest {
     @Test
     //Registration with valid email address
     public void validRegistrationTest() {
+        String email = "ragvelofo@mail.ru";
+        String passwordNew = "4365Euyt7Dgr";
+        String passwordConf = "4365Euyt7Dgr";
+
         Registration validSearch = new Registration(driver);
         validSearch.acceptCookie();
         validSearch.registerPage();
-        validSearch.inputEmail("ravelofoed@mail.ru");
+        validSearch.inputEmail(email);
         validSearch.continueRegistration();
-        validSearch.selectNewPassword("uytRFD6543Egr");
-        validSearch.selectConfirmedPassword("uytRFD6543Egr");
+        validSearch.selectNewPassword(passwordNew);
+        validSearch.selectConfirmedPassword(passwordConf);
         validSearch.continueRegistration();
-
-        WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(40))
-                .until(driver -> driver.findElement(By.xpath("//span[@id='profile-menu-trigger--title']")));
-        assertEquals(confirm.getText().contains("Your account"), true);
-
+        validSearch.confirm();
     }
 
     @AfterSuite

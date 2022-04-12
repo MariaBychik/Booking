@@ -1,9 +1,17 @@
 package Booking;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+
+import static org.testng.Assert.assertEquals;
 
 public class Registration {
     public WebDriver driver;
@@ -31,7 +39,15 @@ public class Registration {
     @FindBy(xpath = "//input[@id='confirmed_password']")
     WebElement passwordConfirmedField;
 
-    public void acceptCookie(){acceptButton.click();}
+    public void acceptCookie() {
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='onetrust-banner-sdk']")));
+            acceptButton.click();
+        }
+        catch(TimeoutException e) {
+
+        }
+    }
 
     public void registerPage() {
         signInButton.click();
@@ -51,6 +67,12 @@ public class Registration {
 
     public void selectConfirmedPassword(String passwordConf) {
         passwordConfirmedField.sendKeys(passwordConf);
+    }
+
+    public void confirm(){
+        WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(40))
+                .until(driver -> driver.findElement(By.xpath("//span[@id='profile-menu-trigger--title']")));
+        assertEquals(confirm.getText().contains("Your account"), true);
     }
 
     }

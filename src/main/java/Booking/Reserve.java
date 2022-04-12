@@ -1,12 +1,18 @@
 package Booking;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
+
+import static org.testng.Assert.assertEquals;
 
 public class Reserve{
     public WebDriver driver;
@@ -36,9 +42,6 @@ public class Reserve{
 
     @FindBy(xpath = "(//div[@data-testid='title'])[1]")
     WebElement searchResults;
-
-    @FindBy(xpath = "(//span[@class='bui-button__text'])[20]")
-    WebElement reserveButton;
 
     @FindBy(xpath = "(//button[@type='submit'])[3]")
     WebElement reserveConfirmButton;
@@ -71,7 +74,15 @@ public class Reserve{
     WebElement completeButton;
 
 
-    public void acceptCookie(){acceptButton.click();}
+    public void acceptCookie() {
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='onetrust-banner-sdk']")));
+            acceptButton.click();
+        }
+        catch(TimeoutException e) {
+
+        }
+    }
 
     public void selectDestination(String strDestin) {
         destinationTextBox.sendKeys(strDestin);
@@ -128,8 +139,6 @@ public class Reserve{
             driver.switchTo().window(tab);
         }
     }
-    public void reserveApartment(){
-        reserveButton.click();}
 
     public void selectRoom(String expCountRoom){
         dropDownRoomButton.click();
@@ -172,6 +181,11 @@ public class Reserve{
 
     public void completeBooking(){
         completeButton.click();
+    }
 
+    public void confirm(){
+        WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(40))
+                .until(driver -> driver.findElement(By.xpath("//span[@class='conf-page-gem-offers__badge-text']")));
+        assertEquals(confirm.getText(), "Your booking in Batumi is confirmed");
     }
 }

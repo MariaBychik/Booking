@@ -1,10 +1,7 @@
 package Booking;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
@@ -12,7 +9,7 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-import static org.testng.Assert.assertEquals;
+
 
 public class SearchTest {
     public static WebDriver driver;
@@ -22,61 +19,68 @@ public class SearchTest {
         System.setProperty("webdriver.chrome.driver", "src/main/java/Driver/chromedriver.exe");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.get("https://www.booking.com");
     }
 
     @Test
     //Search hotels with valid values without authorization in the account
     public void dataInputSearch() {
+        String strDestin ="Maldives";
+        String expArriveMonth = "August 2022";
+        String expArriveDate = "15";
+        String expDepartureMonth= "August 2022";
+        String expDepartureDate= "30";
+        String expCountAdult= "4";
+        String expCountChildren= "2";
+        String expCountChildren1= "9";
+        String expCountChildren2= "5";
+        String expCountRoom= "2";
+        String meals ="All-inclusive";
+
         Search validSearch = new Search(driver);
         validSearch.acceptCookie();
-        validSearch.selectDestination("Maldives");
+        validSearch.selectDestination(strDestin);
         validSearch.clickArrive();
-        validSearch.selectArriveData("August 2022", "15");
-        validSearch.selectDepartureData("August 2022", "30");
+        validSearch.selectArriveData(expArriveMonth, expArriveDate);
+        validSearch.selectDepartureData(expDepartureMonth, expDepartureDate);
         validSearch.selectDetails();
-        validSearch.selectAdults("4");
-        validSearch.selectChildren("2", "9", "5");
-        validSearch.selectCountRoom("2");
+        validSearch.selectAdults(expCountAdult);
+        validSearch.selectChildren(expCountChildren, expCountChildren1, expCountChildren2);
+        validSearch.selectCountRoom(expCountRoom);
         validSearch.runSearch();
-        validSearch.mealsSelect("All-inclusive");
-
-        WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(40))
-                .until(driver -> driver.findElement(By.xpath("//div[@class='efdb2b543b']")));
-        assertEquals(confirm.getText().contains("properties found"), true);
-
+        validSearch.mealsSelect(meals);
+        validSearch.confirm();
         validSearch.returnHomePage();
     }
 
     @Test
     //Search cars with valid values without authorization in the account
     public void searchCarRentals() {
+        String strLocation = "Milan";
+        String expStartCarRentMonth = "August 2022";
+        String expStartCarRentDay = "15";
+
         Search carRentals = new Search(driver);
         carRentals.selectCarTab();
-        carRentals.selectLocation("Milan");
+        carRentals.selectLocation(strLocation);
         carRentals.selectDataCarRent();
-        carRentals.selectCarRentDataA("August 2022", "15", "10", "15");
+        carRentals.selectCarRentDataA(expStartCarRentMonth, expStartCarRentDay);
         carRentals.searchCar();
-
-        WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(40))
-                .until(driver -> driver.findElement(By.xpath("//div[@data-testid='page-title']")));
-        assertEquals(confirm.getText().contains("cars available"), true);
+        carRentals.confirmA();
     }
 
     @Test
     //Search attractions with valid values without authorization in the account
     public void searchAttractions() {
+        String city = "Amsterdam";
+
         Search attractions = new Search(driver);
         attractions.selectAttractions();
         attractions.selectDestination();
-        attractions.selectAttractionFilter("Amsterdam");
+        attractions.selectAttractionFilter(city);
         attractions.selectAttraction();
-
-        WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(40))
-                .until(driver -> driver.findElement(By.xpath("//nav[@class='_806745cd2f']")));
-        assertEquals(confirm.getText().contains("Attractions"), true);
-
+        attractions.confirmB();
         attractions.returnHomePage();
     }
 
@@ -85,6 +89,8 @@ public class SearchTest {
         SearchTest.driver.quit();
     }
 }
+
+
 
 
 
