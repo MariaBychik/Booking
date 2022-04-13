@@ -29,7 +29,6 @@ public class RegistrationTest {
     //Registration with valid email address
     public void validRegistrationTest() {
 
-
         String email = RandomUtils.getEmailString()+"@gmail.com";
         String passwordNew = RandomUtils.getPasswordString();
         String passwordConf = passwordNew;

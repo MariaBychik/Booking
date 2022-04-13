@@ -93,8 +93,7 @@ public class Registration {
                 .until(driver -> driver.findElement(By.xpath("//span[@id='profile-menu-trigger--title']")));
         assertEquals(confirm.getText().contains("Your account"), true);
     }
-
-    }
+}
 
 
 
