@@ -24,7 +24,7 @@ public class Search {
         this.driver = driver;
     }
 
-    @FindBy(xpath="//button[@id='onetrust-accept-btn-handler']")
+    @FindBy(xpath = "//button[@id='onetrust-accept-btn-handler']")
     WebElement acceptButton;
 
     @FindBy(xpath = "//*[@name='ss']")
@@ -75,6 +75,7 @@ public class Search {
     @FindBy(xpath = "(//th[@class='c2-month-header-monthname'][text()='August 2022'])[1]")
     WebElement monthRentCar;
 
+    //rename
     @FindBy(xpath = "(//span[@class='c2-button-inner'])[2]")
     WebElement nextButton1;
 
@@ -97,14 +98,13 @@ public class Search {
         try {
             new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.elementToBeClickable(bannerAccept));
             acceptButton.click();
-        }
-        catch(TimeoutException e) {
-
+        } catch (TimeoutException e) {
+            e.printStackTrace();
         }
     }
 
-    public void selectDestination(String strDestin) {
-        destinationTextBox.sendKeys(strDestin);
+    public void selectDestination(String destination) {
+        destinationTextBox.sendKeys(destination);
     }
 
     public void clickArrive() {
@@ -120,11 +120,12 @@ public class Search {
                 nextButton.click();
             }
         }
+
         List<WebElement> cell = driver.findElements(By.xpath("(//tbody[1]//tr//td/span)"));
-        for (WebElement element1 : cell) {
-            String dateArrive = element1.getText();
+        for (WebElement arrivalDate : cell) {
+            String dateArrive = arrivalDate.getText();
             if (dateArrive.equals(expArriveDate)) {
-                element1.click();
+                arrivalDate.click();
                 break;
             }
         }
@@ -139,11 +140,12 @@ public class Search {
                 nextButton.click();
             }
         }
+
         List<WebElement> cell = driver.findElements(By.xpath("(//tbody[1]//tr//td/span)"));
-        for (WebElement element1 : cell) {
-            String date = element1.getText();
+        for (WebElement departureDate : cell) {
+            String date = departureDate.getText();
             if (date.equals(expDepartureDate)) {
-                element1.click();
+                departureDate.click();
                 break;
             }
         }
@@ -153,7 +155,7 @@ public class Search {
         detailsContainer.click();
     }
 
-    public void selectAdults(String expCountAdult) {
+    public void selectAdultsQuantity(String expCountAdult) {
         while (true) {
             String countAdult = adultTextBox.getText();
             if (countAdult.equals(expCountAdult)) {
@@ -164,6 +166,7 @@ public class Search {
         }
     }
 
+    //expage massive or list
     public void selectChildren(String expCountChildren, String expAgeChildren1, String expAgeChildren2) {
         while (true) {
             String countChildren = childrenTextBox.getText();
@@ -176,12 +179,11 @@ public class Search {
                 addChildrenButton.click();
                 Select ageChildren2 = new Select(driver.findElement(By.xpath("//select[@name='age'][2]")));
                 ageChildren2.selectByValue(expAgeChildren2);
-
             }
         }
     }
 
-    public void selectCountRoom(String expCountRoom) {
+    public void selectRoomQuantity(String expCountRoom) {
         while (true) {
             String countRoom = roomTextBox.getText();
             if (countRoom.equals(expCountRoom)) {
@@ -196,31 +198,30 @@ public class Search {
         searchButton.click();
     }
 
-
-    public void mealsSelect(String meals) {
-     String xpath = "//div[@data-filters-group='mealplan']/descendant::*[contains(text(), '%s')]";
+    public void selectMeals(String meals) {
+        String xpath = "//div[@data-filters-group='mealplan']/descendant::*[contains(text(), '%s')]";
         if (!driver.findElement(By.xpath(String.format(xpath, meals))).isSelected()) {
             driver.findElement(By.xpath(String.format(xpath, meals))).click();
         }
     }
 
-    public void confirm(){
-        WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(10))
+    public boolean isFoundResultSorted() {
+        WebElement propertiesMessage = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(driver -> driver.findElement(By.xpath("//div[@class='efdb2b543b']")));
-        assertEquals(confirm.getText().contains("properties found"), true);
+        return propertiesMessage.getText().contains("properties found");
     }
 
+    //basePage + sec + driver
     public void returnHomePage() {
-        driver.navigate().to("https://www.booking.com");}
+        driver.navigate().to("https://www.booking.com");
+    }
 
+    public void selectCarTab() {
+        carTab.click();
+    }
 
-    public void selectCarTab()  {
-            carTab.click();
-        }
-
-
-    public void selectLocation(String strLocation) {
-        carSearchField.sendKeys(strLocation);
+    public void selectLocation(String location) {
+        carSearchField.sendKeys(location);
         driver.findElement(By.xpath("//li[@data-i='4']")).click();
     }
 
@@ -228,7 +229,7 @@ public class Search {
         carDataField.click();
     }
 
-    public void selectCarRentDataA(String expStartCarRentMonth, String expStartCarRentDay) {
+    public void selectCarRentData(String expStartCarRentMonth, String expStartCarRentDay) {
         while (true) {
             String startCarRentMonth = monthRentCar.getText();
             if (startCarRentMonth.equals(expStartCarRentMonth)) {
@@ -248,27 +249,20 @@ public class Search {
         }
     }
 
-        public void searchCar() {
-            searchCarButton.click();
-        }
-
-        public void confirmA(){
-            try {
-            WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(driver -> driver.findElement(By.xpath("//div[@data-testid='page-title']")));
-            assertEquals(confirm.getText().contains("available"), true);
-            } catch (TimeoutException e) {
-            }
-        }
-
-    public void confirmC(){
-        try {
-            WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(driver -> driver.findElement(By.xpath("//form[@name='SearchResultsForm']")));
-            assertEquals(confirm.getText().contains("find"), true);
-        } catch (TimeoutException e) {
-        }
+    public void searchCar() {
+        searchCarButton.click();
     }
+
+      public boolean isCarExisted(){
+        boolean carIsAvailable = false;
+        try{
+            carIsAvailable = isCarAvailable();
+        }
+        catch(TimeoutException e){
+            carIsAvailable = isCarFound();
+        }
+        return carIsAvailable;
+      }
 
         public void selectAttractions(){
            attractionsButton.click();
@@ -290,12 +284,27 @@ public class Search {
         viewButton.click();
     }
 
-    public void confirmB(){
+    public boolean confirmB(){
             WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(10))
                     .until(driver -> driver.findElement(By.xpath("//nav[@class='_806745cd2f']")));
-            assertEquals(confirm.getText().contains("Attractions"), true);
+            return confirm.getText().contains("Attractions");
     }
 
+    private boolean isCarAvailable() {
+        WebElement availableMessage = null;
+        try {
+            availableMessage = new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(driver -> driver.findElement(By.xpath("//div[@data-testid='page-title']")));
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        return availableMessage.getText().contains("available");
+    }
+
+    private boolean isCarFound(){
+        return new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> driver.findElement(By.xpath("//form[@name='SearchResultsForm']"))).getText().contains("find");
+        }
 }
 
 

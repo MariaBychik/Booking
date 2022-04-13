@@ -1,27 +1,9 @@
 package Booking;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
-
-import java.time.Duration;
-
-
-
-public class SearchTest {
-    public static WebDriver driver;
-
-    @BeforeSuite
-    public void setup() {
-        System.setProperty("webdriver.chrome.driver", "src/main/java/Driver/chromedriver.exe");
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.get("https://www.booking.com");
-    }
+public class SearchTest extends BaseTest{
 
     @Test
     //Search hotels with valid values without authorization in the account
@@ -45,12 +27,12 @@ public class SearchTest {
         validSearch.selectArriveData(expArriveMonth, expArriveDate);
         validSearch.selectDepartureData(expDepartureMonth, expDepartureDate);
         validSearch.selectDetails();
-        validSearch.selectAdults(expCountAdult);
+        validSearch.selectAdultsQuantity(expCountAdult);
         validSearch.selectChildren(expCountChildren, expCountChildren1, expCountChildren2);
-        validSearch.selectCountRoom(expCountRoom);
+        validSearch.selectRoomQuantity(expCountRoom);
         validSearch.runSearch();
-        validSearch.mealsSelect(meals);
-        validSearch.confirm();
+        validSearch.selectMeals(meals);
+        Assert.assertTrue(validSearch.isFoundResultSorted(), "");
         validSearch.returnHomePage();
     }
 
@@ -65,10 +47,10 @@ public class SearchTest {
         carRentals.selectCarTab();
         carRentals.selectLocation(strLocation);
         carRentals.selectDataCarRent();
-        carRentals.selectCarRentDataA(expStartCarRentMonth, expStartCarRentDay);
+        carRentals.selectCarRentData(expStartCarRentMonth, expStartCarRentDay);
         carRentals.searchCar();
-        carRentals.confirmA();
-        carRentals.confirmC();
+        carRentals.isCarAvailable();
+        carRentals.isCarFound();
     }
 
     @Test
@@ -83,11 +65,6 @@ public class SearchTest {
         attractions.selectAttraction();
         attractions.confirmB();
         attractions.returnHomePage();
-    }
-
-    @AfterSuite
-    public void TeardownTest() {
-        SearchTest.driver.quit();
     }
 }
 

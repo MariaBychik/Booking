@@ -12,16 +12,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
-import static org.testng.Assert.assertEquals;
-
 public class Reserve{
     public WebDriver driver;
-
-    public Reserve(WebDriver driver) {
-        PageFactory.initElements(driver, this);
-        this.driver = driver;
-    }
-
+    
     @FindBy(xpath = "//div[@id='onetrust-banner-sdk']")
     WebElement bannerAccept;
 
@@ -76,17 +69,20 @@ public class Reserve{
     @FindBy (xpath = "(//span[@class='bui-button__text js-button__text'])[2]")
     WebElement completeButton;
 
-
+    public Reserve(WebDriver driver) {
+        PageFactory.initElements(driver, this);
+        this.driver = driver;
+    }
+    
     public void acceptCookie() {
         try {
             new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.elementToBeClickable(bannerAccept));
             acceptButton.click();
         }
         catch(TimeoutException e) {
-
+            e.printStackTrace();
         }
     }
-
     public void selectDestination(String strDestin) {
         destinationTextBox.sendKeys(strDestin);
     }
@@ -104,11 +100,12 @@ public class Reserve{
                 nextButton.click();
             }
         }
+
         List<WebElement> cell = driver.findElements(By.xpath("//tbody[1]//tr//td/span"));
-        for (WebElement element1 : cell) {
-            String dateArrive = element1.getText();
+        for (WebElement arriveDate : cell) {
+            String dateArrive = arriveDate.getText();
             if (dateArrive.equals(expArriveDate)) {
-                element1.click();
+                arriveDate.click();
                 break;
             }
         }
@@ -123,11 +120,12 @@ public class Reserve{
                 nextButton.click();
             }
         }
+
         List<WebElement> cell = driver.findElements(By.xpath("//tbody[1]//tr//td/span"));
-        for (WebElement element1 : cell) {
-            String date = element1.getText();
+        for (WebElement departureDate : cell) {
+            String date = departureDate.getText();
             if (date.equals(expDepartureDate)) {
-                element1.click();
+                departureDate.click();
                 break;
             }
         }
@@ -143,42 +141,42 @@ public class Reserve{
         }
     }
 
-    public void selectRoom(String expCountRoom){
+    public void selectRoomQuantity(String expCountRoom){
         dropDownRoomButton.click();
         String selectCountRoom = "(//select[@class='hprt-nos-select js-hprt-nos-select'])[1]/descendant::*[contains(text(),'%s')][1]";
         if (!driver.findElement(By.xpath(String.format(selectCountRoom, expCountRoom))).isSelected())
             driver.findElement(By.xpath(String.format(selectCountRoom, expCountRoom))).click();
     }
 
-    public void reserveConfirm(){
+    public void confirmReservation(){
         reserveConfirmButton.click();
     }
 
-    public void fillInFirstNameData(String fName){
-        firstNameField.sendKeys(fName);
+    public void fillInFirstNameData(String firstName){
+        firstNameField.sendKeys(firstName);
     }
 
-    public void fillInLastNameData(String lName){
-        lastNameField.sendKeys(lName);
+    public void fillInLastNameData(String lastName){
+        lastNameField.sendKeys(lastName);
     }
 
-    public void fillInEmail(String emailF){
-        emailField.sendKeys(emailF);
+    public void fillInEmail(String email){
+        emailField.sendKeys(email);
     }
 
-    public void confirmEmail(String emailC){
-        emailConfField.sendKeys(emailC);
+    public void confirmEmail(String email){
+        emailConfField.sendKeys(email);
     }
 
     public void selectBookingAim(){
         radioButton.click();
     }
 
-    public void bookSubmit(){
+    public void clickBookButton(){
         bookButton.click();
     }
 
-    public void fillInPhone(String phoneNumber){
+    public void fillInPhoneNumber(String phoneNumber){
         phoneTextBox.sendKeys(phoneNumber);
     }
 
@@ -186,9 +184,9 @@ public class Reserve{
         completeButton.click();
     }
 
-    public void confirm(){
-        WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(40))
+    public boolean isReservationConfirmed(){
+        WebElement reservationMessage = new WebDriverWait(driver, Duration.ofSeconds(40))
                 .until(driver -> driver.findElement(By.xpath("//span[@class='conf-page-gem-offers__badge-text']")));
-        assertEquals(confirm.getText(), "Your booking in Batumi is confirmed");
+         return reservationMessage.getText().contains("is confirmed");
     }
 }
