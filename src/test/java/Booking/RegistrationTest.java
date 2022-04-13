@@ -1,20 +1,17 @@
 package Booking;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-import static org.testng.Assert.assertEquals;
 
 public class RegistrationTest {
     public static WebDriver driver;
+
 
     @BeforeSuite
     public void setup() {
@@ -22,6 +19,7 @@ public class RegistrationTest {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
         driver.get("https://www.booking.com");
         driver.manage().getCookies();
 
@@ -30,9 +28,11 @@ public class RegistrationTest {
     @Test
     //Registration with valid email address
     public void validRegistrationTest() {
-        String email = "ragvelvjofo@mail.ru";
-        String passwordNew = "1Wuyt7D65Egr";
-        String passwordConf = "1Wuyt7D65Egr";
+
+
+        String email = RandomUtils.getEmailString()+"@gmail.com";
+        String passwordNew = RandomUtils.getPasswordString();
+        String passwordConf = passwordNew;
 
         Registration validSearch = new Registration(driver);
         validSearch.acceptCookie();
@@ -41,7 +41,7 @@ public class RegistrationTest {
         validSearch.continueRegistration();
         validSearch.selectNewPassword(passwordNew);
         validSearch.selectConfirmedPassword(passwordConf);
-        validSearch.continueRegistration();
+        validSearch.confirmRegistration();
         validSearch.confirm();
     }
 

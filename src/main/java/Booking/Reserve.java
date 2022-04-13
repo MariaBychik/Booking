@@ -22,13 +22,16 @@ public class Reserve{
         this.driver = driver;
     }
 
+    @FindBy(xpath = "//div[@id='onetrust-banner-sdk']")
+    WebElement bannerAccept;
+
     @FindBy(xpath="//button[@id='onetrust-accept-btn-handler']")
     WebElement acceptButton;
 
     @FindBy(xpath = "//*[@name='ss']")
     WebElement destinationTextBox;
 
-    @FindBy(xpath = "//*[@role = 'presentation'][@class ='bk-icon -experiments-calendar sb-date-picker_icon-svg']")
+    @FindBy(xpath = "//div[@class='xp__dates-inner']")
     WebElement dataTextBox;
 
     @FindBy(xpath = "//div[@class = 'bui-calendar__control bui-calendar__control--next']")
@@ -76,7 +79,7 @@ public class Reserve{
 
     public void acceptCookie() {
         try {
-            new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='onetrust-banner-sdk']")));
+            new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.elementToBeClickable(bannerAccept));
             acceptButton.click();
         }
         catch(TimeoutException e) {
@@ -101,7 +104,7 @@ public class Reserve{
                 nextButton.click();
             }
         }
-        List<WebElement> cell = driver.findElements(By.xpath("(//tbody[1]//tr//td/span)"));
+        List<WebElement> cell = driver.findElements(By.xpath("//tbody[1]//tr//td/span"));
         for (WebElement element1 : cell) {
             String dateArrive = element1.getText();
             if (dateArrive.equals(expArriveDate)) {
@@ -120,7 +123,7 @@ public class Reserve{
                 nextButton.click();
             }
         }
-        List<WebElement> cell = driver.findElements(By.xpath("(//tbody[1]//tr//td/span)"));
+        List<WebElement> cell = driver.findElements(By.xpath("//tbody[1]//tr//td/span"));
         for (WebElement element1 : cell) {
             String date = element1.getText();
             if (date.equals(expDepartureDate)) {

@@ -30,7 +30,7 @@ public class Search {
     @FindBy(xpath = "//*[@name='ss']")
     WebElement destinationTextBox;
 
-    @FindBy(xpath = "//*[@role = 'presentation'][@class ='bk-icon -experiments-calendar sb-date-picker_icon-svg']")
+    @FindBy(xpath = "//div[@class='xp__dates-inner']")
     WebElement dataTextBox;
 
     @FindBy(xpath = "//div[@class = 'bui-calendar__control bui-calendar__control--next']")
@@ -42,13 +42,13 @@ public class Search {
     @FindBy(xpath = "//div[@class = 'xp__input-group xp__guests']")
     WebElement detailsContainer;
 
-    @FindBy(xpath = "(//button[@class='bui-button bui-button--secondary bui-stepper__add-button '])[1]")
+    @FindBy(xpath = "(//button[@class='bui-button bui-button--secondary bui-stepper__add-button'])[1]")
     WebElement addAdultButton;
 
     @FindBy(xpath = "(//span[@class='bui-stepper__display'])[1]")
     WebElement adultTextBox;
 
-    @FindBy(xpath = "(//button[@class='bui-button bui-button--secondary bui-stepper__add-button '])[2]")
+    @FindBy(xpath = "(//button[@class='bui-button bui-button--secondary bui-stepper__add-button'])[2]")
     WebElement addChildrenButton;
 
     @FindBy(xpath = "(//span[@class='bui-stepper__display'])[2]")
@@ -90,9 +90,12 @@ public class Search {
     @FindBy(xpath = "(//span[@class='_082e45fe75'])[7]")
     WebElement viewButton;
 
+    @FindBy(xpath = "//div[@id='onetrust-banner-sdk']")
+    WebElement bannerAccept;
+
     public void acceptCookie() {
         try {
-            new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='onetrust-banner-sdk']")));
+            new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.elementToBeClickable(bannerAccept));
             acceptButton.click();
         }
         catch(TimeoutException e) {
@@ -250,10 +253,22 @@ public class Search {
         }
 
         public void confirmA(){
-            WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(50))
+            try {
+            WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(driver -> driver.findElement(By.xpath("//div[@data-testid='page-title']")));
+            assertEquals(confirm.getText().contains("available"), true);
+            } catch (TimeoutException e) {
+            }
+        }
+
+    public void confirmC(){
+        try {
+            WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(10))
                     .until(driver -> driver.findElement(By.xpath("//form[@name='SearchResultsForm']")));
             assertEquals(confirm.getText().contains("find"), true);
+        } catch (TimeoutException e) {
         }
+    }
 
         public void selectAttractions(){
            attractionsButton.click();
@@ -276,11 +291,10 @@ public class Search {
     }
 
     public void confirmB(){
-        WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(40))
-                .until(driver -> driver.findElement(By.xpath("//nav[@class='_806745cd2f']")));
-        assertEquals(confirm.getText().contains("Attractions"), true);
+            WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(driver -> driver.findElement(By.xpath("//nav[@class='_806745cd2f']")));
+            assertEquals(confirm.getText().contains("Attractions"), true);
     }
-
 
 }
 

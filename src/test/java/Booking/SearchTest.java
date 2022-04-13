@@ -68,6 +68,7 @@ public class SearchTest {
         carRentals.selectCarRentDataA(expStartCarRentMonth, expStartCarRentDay);
         carRentals.searchCar();
         carRentals.confirmA();
+        carRentals.confirmC();
     }
 
     @Test
