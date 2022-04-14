@@ -126,6 +126,7 @@ public class Reserve{
                 nextButton.click();
             }
         }
+
         List<WebElement> cell = driver.findElements(By.xpath("//tbody[1]//tr//td/span"));
         for (WebElement departureDate : cell) {
             String date = departureDate.getText();
