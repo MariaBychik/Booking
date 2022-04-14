@@ -12,17 +12,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
-import static org.testng.Assert.assertEquals;
-
-
 public class Search {
 
     public WebDriver driver;
-
-    public Search(WebDriver driver) {
-        PageFactory.initElements(driver, this);
-        this.driver = driver;
-    }
 
     @FindBy(xpath="//button[@id='onetrust-accept-btn-handler']")
     WebElement acceptButton;
@@ -42,13 +34,13 @@ public class Search {
     @FindBy(xpath = "//div[@class = 'xp__input-group xp__guests']")
     WebElement detailsContainer;
 
-    @FindBy(xpath = "(//button[@class='bui-button bui-button--secondary bui-stepper__add-button'])[1]")
+    @FindBy(xpath = "//button[@aria-label='Increase number of Adults']")
     WebElement addAdultButton;
 
     @FindBy(xpath = "(//span[@class='bui-stepper__display'])[1]")
     WebElement adultTextBox;
 
-    @FindBy(xpath = "(//button[@class='bui-button bui-button--secondary bui-stepper__add-button'])[2]")
+    @FindBy(xpath = "//button[@aria-label='Increase number of Children']")
     WebElement addChildrenButton;
 
     @FindBy(xpath = "(//span[@class='bui-stepper__display'])[2]")
@@ -57,7 +49,7 @@ public class Search {
     @FindBy(xpath = "(//span[@class='bui-stepper__display'])[3]")
     WebElement roomTextBox;
 
-    @FindBy(xpath = "(//span[@class='bui-button__text'])[11]")
+    @FindBy(xpath = "//button[@aria-label='Increase number of Rooms']")
     WebElement addRoomButton;
 
     @FindBy(xpath = "//button[@class='sb-searchbox__button ']")
@@ -93,25 +85,33 @@ public class Search {
     @FindBy(xpath = "//div[@id='onetrust-banner-sdk']")
     WebElement bannerAccept;
 
-    public void acceptCookie() {
+    public Search(WebDriver driver) {
+        PageFactory.initElements(driver, this);
+        this.driver = driver;
+    }
+
+    public Search acceptCookie() {
         try {
             new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.elementToBeClickable(bannerAccept));
             acceptButton.click();
         }
         catch(TimeoutException e) {
-
+            e.printStackTrace();
         }
+        return this;
     }
 
-    public void selectDestination(String strDestin) {
-        destinationTextBox.sendKeys(strDestin);
+    public Search selectDestination(String destination) {
+        destinationTextBox.sendKeys(destination);
+        return this;
     }
 
-    public void clickArrive() {
+    public Search clickArrive() {
         dataTextBox.click();
+        return this;
     }
 
-    public void selectArriveData(String expArriveMonth, String expArriveDate) {
+    public Search selectArriveData(String expArriveMonth, String expArriveDate) {
         while (true) {
             String monthArrive = monthTextField.getText();
             if (monthArrive.equals(expArriveMonth)) {
@@ -120,17 +120,19 @@ public class Search {
                 nextButton.click();
             }
         }
+
         List<WebElement> cell = driver.findElements(By.xpath("(//tbody[1]//tr//td/span)"));
-        for (WebElement element1 : cell) {
-            String dateArrive = element1.getText();
+        for (WebElement arrivalDate : cell) {
+            String dateArrive = arrivalDate.getText();
             if (dateArrive.equals(expArriveDate)) {
-                element1.click();
+                arrivalDate.click();
                 break;
             }
         }
+        return this;
     }
 
-    public void selectDepartureData(String expDepartureMonth, String expDepartureDate) {
+    public Search selectDepartureData(String expDepartureMonth, String expDepartureDate) {
         while (true) {
             String monthDeparture = monthTextField.getText();
             if (monthDeparture.equals(expDepartureMonth)) {
@@ -139,21 +141,24 @@ public class Search {
                 nextButton.click();
             }
         }
+
         List<WebElement> cell = driver.findElements(By.xpath("(//tbody[1]//tr//td/span)"));
-        for (WebElement element1 : cell) {
-            String date = element1.getText();
+        for (WebElement departureDate : cell) {
+            String date = departureDate.getText();
             if (date.equals(expDepartureDate)) {
-                element1.click();
+                departureDate.click();
                 break;
             }
         }
+        return this;
     }
 
-    public void selectDetails() {
+    public Search selectDetails() {
         detailsContainer.click();
+        return this;
     }
 
-    public void selectAdults(String expCountAdult) {
+    public Search selectAdultsQuantity(String expCountAdult) {
         while (true) {
             String countAdult = adultTextBox.getText();
             if (countAdult.equals(expCountAdult)) {
@@ -162,9 +167,10 @@ public class Search {
                 addAdultButton.click();
             }
         }
+        return this;
     }
 
-    public void selectChildren(String expCountChildren, String expAgeChildren1, String expAgeChildren2) {
+    public Search selectChildren(String expCountChildren, String expAgeChildren1, String expAgeChildren2) {
         while (true) {
             String countChildren = childrenTextBox.getText();
             if (countChildren.equals(expCountChildren)) {
@@ -179,9 +185,10 @@ public class Search {
 
             }
         }
+        return this;
     }
 
-    public void selectCountRoom(String expCountRoom) {
+    public Search selectRoomQuantity(String expCountRoom) {
         while (true) {
             String countRoom = roomTextBox.getText();
             if (countRoom.equals(expCountRoom)) {
@@ -190,45 +197,51 @@ public class Search {
                 addRoomButton.click();
             }
         }
+        return this;
     }
 
-    public void runSearch() {
+    public Search runSearch() {
         searchButton.click();
+        return this;
     }
 
 
-    public void mealsSelect(String meals) {
+    public Search selectMeals(String meals) {
      String xpath = "//div[@data-filters-group='mealplan']/descendant::*[contains(text(), '%s')]";
         if (!driver.findElement(By.xpath(String.format(xpath, meals))).isSelected()) {
             driver.findElement(By.xpath(String.format(xpath, meals))).click();
         }
+        return this;
     }
 
-    public void confirm(){
-        WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(10))
+    public boolean isFoundResultSorted(){
+        WebElement propertiesMessage = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(driver -> driver.findElement(By.xpath("//div[@class='efdb2b543b']")));
-        assertEquals(confirm.getText().contains("properties found"), true);
+        return propertiesMessage.getText().contains("properties found");
     }
 
-    public void returnHomePage() {
-        driver.navigate().to("https://www.booking.com");}
+    public Search returnHomePage() {
+        driver.navigate().to("https://www.booking.com");
+        return this;
+    }
 
-
-    public void selectCarTab()  {
+    public Search selectCarTab()  {
             carTab.click();
+            return this;
         }
 
-
-    public void selectLocation(String strLocation) {
+    public Search selectLocation(String strLocation) {
         carSearchField.sendKeys(strLocation);
         driver.findElement(By.xpath("//li[@data-i='4']")).click();
+        return this;
     }
 
-    public void selectDataCarRent() {
+    public Search selectDataCarRent() {
         carDataField.click();
+        return this;
     }
 
-    public void selectCarRentDataA(String expStartCarRentMonth, String expStartCarRentDay) {
+    public Search selectCarRentData(String expStartCarRentMonth, String expStartCarRentDay) {
         while (true) {
             String startCarRentMonth = monthRentCar.getText();
             if (startCarRentMonth.equals(expStartCarRentMonth)) {
@@ -246,57 +259,66 @@ public class Search {
                 break;
             }
         }
+        return this;
     }
 
-        public void searchCar() {
+        public Search searchCar() {
             searchCarButton.click();
+            return this;
         }
 
-        public void confirmA(){
-            try {
-            WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(driver -> driver.findElement(By.xpath("//div[@data-testid='page-title']")));
-            assertEquals(confirm.getText().contains("available"), true);
-            } catch (TimeoutException e) {
-            }
+        public boolean isCarExisted(){
+        boolean carIsAvailable = false;
+        try{
+            carIsAvailable = isCarAvailable();
         }
-
-    public void confirmC(){
-        try {
-            WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(driver -> driver.findElement(By.xpath("//form[@name='SearchResultsForm']")));
-            assertEquals(confirm.getText().contains("find"), true);
-        } catch (TimeoutException e) {
+        catch(TimeoutException e){
+            carIsAvailable = isCarFound();
         }
+        return carIsAvailable;
     }
 
-        public void selectAttractions(){
+        public Search selectAttractions(){
            attractionsButton.click();
+           return this;
         }
 
-
-        public void selectDestination(){
+        public Search selectDestination(){
           destinationTab.click();
+          return this;
         }
 
-        public void selectAttractionFilter(String city) {
+        public Search selectAttractionFilter(String city) {
         String xpath = "//div[@class='_85d06581c8']/descendant::*[contains(text(), '%s')]";
         if (!driver.findElement(By.xpath(String.format(xpath, city))).isSelected()) {
             driver.findElement(By.xpath(String.format(xpath, city))).click();
         }
+        return this;
     }
 
-    public void selectAttraction(){
+    public Search selectAttraction(){
         viewButton.click();
+        return this;
     }
 
-    public void confirmB(){
-            WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(10))
+    public boolean isAttractionFound(){
+            WebElement foundedMessage = new WebDriverWait(driver, Duration.ofSeconds(10))
                     .until(driver -> driver.findElement(By.xpath("//nav[@class='_806745cd2f']")));
-            assertEquals(confirm.getText().contains("Attractions"), true);
+            return foundedMessage.getText().contains("Attractions");
     }
 
+    private boolean isCarAvailable() {
+        return new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> driver.findElement(By.xpath("//div[@data-testid='page-title']"))).getText().contains("available");
+    }
+
+    private boolean isCarFound(){
+        return new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> driver.findElement(By.xpath("//form[@name='SearchResultsForm']"))).getText().contains("find");
+    }
 }
+
+
 
 
 

@@ -12,15 +12,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-import static org.testng.Assert.assertEquals;
-
 public class Registration {
     public WebDriver driver;
-
-    public Registration(WebDriver driver) {
-        PageFactory.initElements(driver, this);
-        this.driver = driver;
-    }
 
     @FindBy(xpath = "//button[@id='onetrust-accept-btn-handler']")
     WebElement acceptButton;
@@ -46,54 +39,65 @@ public class Registration {
     @FindBy(xpath = "//p[@id='HSUgawEDeZzEKyk']")
     WebElement pressHoldButton;
 
-    public void acceptCookie() {
+    public Registration(WebDriver driver) {
+        PageFactory.initElements(driver, this);
+        this.driver = driver;
+    }
+
+    public Registration acceptCookie() {
         try {
             new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.elementToBeClickable(bannerAccept));
             acceptButton.click();
         } catch (TimeoutException e) {
-
+            e.printStackTrace();
         }
+        return  this;
     }
 
-    public void registerPage() {
-        signInButton.click();
+    public Registration switchToRegisterPage() {signInButton.click();
+        return this;
     }
 
-    public void inputEmail(String email) {
+    public Registration inputEmail(String email) {
         inputTextBox.sendKeys(email);
+        return this;
     }
 
-    public void continueRegistration() {
+    public Registration continueRegistration() {
         continueButton.click();
+        return this;
     }
 
-    public void selectNewPassword(String passwordNew) {
+    public Registration enterNewPassword(String passwordNew) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(passwordNewField));
         passwordNewField.sendKeys(passwordNew);
+        return this;
     }
 
-    public void selectConfirmedPassword(String passwordConf) {
-        passwordConfirmedField.sendKeys(passwordConf);
+    public Registration enterConfirmedPassword(String passwordConfirmed) {
+        passwordConfirmedField.sendKeys(passwordConfirmed);
+        return this;
     }
 
-    public void confirmRegistration() {
+    public Registration confirmRegistration() {
         continueButton.click();
         try {
             new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.elementToBeClickable(pressHoldButton));
             Actions actions = new Actions(driver);
             actions.clickAndHold(pressHoldButton).perform();
         } catch (TimeoutException e) {
-
+            e.printStackTrace();
         }
+            return this;
     }
 
-    public void confirm(){
-        WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(5))
+    public boolean isUserLoggedIn(){
+        WebElement accountLink = new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(driver -> driver.findElement(By.xpath("//span[@id='profile-menu-trigger--title']")));
-        assertEquals(confirm.getText().contains("Your account"), true);
+        return accountLink.getText().contains("Your account");
     }
-}
+ }
 
 
 

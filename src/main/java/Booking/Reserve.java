@@ -12,15 +12,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
-import static org.testng.Assert.assertEquals;
 
 public class Reserve{
     public WebDriver driver;
-
-    public Reserve(WebDriver driver) {
-        PageFactory.initElements(driver, this);
-        this.driver = driver;
-    }
 
     @FindBy(xpath = "//div[@id='onetrust-banner-sdk']")
     WebElement bannerAccept;
@@ -43,7 +37,7 @@ public class Reserve{
     @FindBy(xpath = "//button[@class='sb-searchbox__button ']")
     WebElement searchButton;
 
-    @FindBy(xpath = "(//div[@data-testid='title'])[1]")
+    @FindBy(xpath = "(//div[@class='d506630cf3'][text()='No prepayment needed'])[1]")
     WebElement searchResults;
 
     @FindBy(xpath = "(//button[@type='submit'])[3]")
@@ -76,26 +70,33 @@ public class Reserve{
     @FindBy (xpath = "(//span[@class='bui-button__text js-button__text'])[2]")
     WebElement completeButton;
 
+    public Reserve(WebDriver driver) {
+        PageFactory.initElements(driver, this);
+        this.driver = driver;
+    }
 
-    public void acceptCookie() {
+    public Reserve acceptCookie() {
         try {
             new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.elementToBeClickable(bannerAccept));
             acceptButton.click();
         }
         catch(TimeoutException e) {
-
+            e.printStackTrace();
         }
+        return this;
     }
 
-    public void selectDestination(String strDestin) {
-        destinationTextBox.sendKeys(strDestin);
+    public Reserve selectDestination(String destination) {
+        destinationTextBox.sendKeys(destination);
+        return this;
     }
 
-    public void clickArrive() {
+    public Reserve clickArrive() {
         dataTextBox.click();
+        return this;
     }
 
-    public void selectArriveData(String expArriveMonth, String expArriveDate) {
+    public Reserve selectArriveData(String expArriveMonth, String expArriveDate) {
         while (true) {
             String monthArrive = monthTextField.getText();
             if (monthArrive.equals(expArriveMonth)) {
@@ -104,17 +105,19 @@ public class Reserve{
                 nextButton.click();
             }
         }
+
         List<WebElement> cell = driver.findElements(By.xpath("//tbody[1]//tr//td/span"));
-        for (WebElement element1 : cell) {
-            String dateArrive = element1.getText();
+        for (WebElement arriveDate : cell) {
+            String dateArrive = arriveDate.getText();
             if (dateArrive.equals(expArriveDate)) {
-                element1.click();
+                arriveDate.click();
                 break;
             }
         }
+        return this;
     }
 
-    public void selectDepartureData(String expDepartureMonth, String expDepartureDate) {
+    public Reserve selectDepartureData(String expDepartureMonth, String expDepartureDate) {
         while (true) {
             String monthDeparture = monthTextField.getText();
             if (monthDeparture.equals(expDepartureMonth)) {
@@ -124,71 +127,89 @@ public class Reserve{
             }
         }
         List<WebElement> cell = driver.findElements(By.xpath("//tbody[1]//tr//td/span"));
-        for (WebElement element1 : cell) {
-            String date = element1.getText();
+        for (WebElement departureDate : cell) {
+            String date = departureDate.getText();
             if (date.equals(expDepartureDate)) {
-                element1.click();
+                departureDate.click();
                 break;
             }
         }
+        return this;
     }
 
-    public void runSearch() {searchButton.click();}
+    public Reserve runSearch() {
+        searchButton.click();
+        return this;
+    }
 
-    public void selectResults() {searchResults.click();}
+    public Reserve selectResults() {
+        searchResults.click();
+        return this;
+    }
 
-    public void switchTab() {
+    public Reserve switchTab() {
         for (String tab : driver.getWindowHandles()) {
             driver.switchTo().window(tab);
         }
+        return this;
     }
 
-    public void selectRoom(String expCountRoom){
+    public Reserve selectRoomQuantity(String expCountRoom){
         dropDownRoomButton.click();
         String selectCountRoom = "(//select[@class='hprt-nos-select js-hprt-nos-select'])[1]/descendant::*[contains(text(),'%s')][1]";
         if (!driver.findElement(By.xpath(String.format(selectCountRoom, expCountRoom))).isSelected())
             driver.findElement(By.xpath(String.format(selectCountRoom, expCountRoom))).click();
+        return this;
     }
 
-    public void reserveConfirm(){
+    public Reserve confirmReservation(){
         reserveConfirmButton.click();
+        return this;
     }
 
-    public void fillInFirstNameData(String fName){
-        firstNameField.sendKeys(fName);
+    public Reserve fillInFirstNameData(String firstName){
+        firstNameField.sendKeys(firstName);
+        return this;
     }
 
-    public void fillInLastNameData(String lName){
-        lastNameField.sendKeys(lName);
+    public Reserve fillInLastNameData(String lastName){
+        lastNameField.sendKeys(lastName);
+        return this;
     }
 
-    public void fillInEmail(String emailF){
-        emailField.sendKeys(emailF);
+    public Reserve fillInEmail(String email){
+        emailField.sendKeys(email);
+        return this;
     }
 
-    public void confirmEmail(String emailC){
-        emailConfField.sendKeys(emailC);
+    public Reserve confirmEmail(String email){
+        emailConfField.sendKeys(email);
+        return this;
     }
 
-    public void selectBookingAim(){
+    public Reserve selectBookingAim(){
         radioButton.click();
+        return this;
     }
 
-    public void bookSubmit(){
+    public Reserve clickBookButton(){
         bookButton.click();
+        return this;
     }
 
-    public void fillInPhone(String phoneNumber){
+    public Reserve fillInPhoneNumber(String phoneNumber){
         phoneTextBox.sendKeys(phoneNumber);
+        return this;
     }
 
-    public void completeBooking(){
+    public Reserve completeBooking(){
         completeButton.click();
+        return this;
     }
 
-    public void confirm(){
-        WebElement confirm = new WebDriverWait(driver, Duration.ofSeconds(40))
+    public boolean isReservationConfirmed(){
+        WebElement reservationMessage = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(driver -> driver.findElement(By.xpath("//span[@class='conf-page-gem-offers__badge-text']")));
-        assertEquals(confirm.getText(), "Your booking in Batumi is confirmed");
+       return reservationMessage.getText().contains("is confirmed");
     }
 }
