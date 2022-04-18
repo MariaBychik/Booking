@@ -7,36 +7,26 @@ public class ReserveTest extends BaseTest {
 
     @Test
     // Reserve stays with valid values without authorization in the account
-    public void booking() {
-        String destination = "Batumi";
-        String expArriveMonth = "May 2022";
-        String expArriveDate = "15";
-        String expDepartureMonth = "May 2022";
-        String expDepartureDate = "20";
-        String expCountRoom = "1";
-        String firstName = "Pavel";
-        String lastName = "Nimale";
-        String email = "pavel@gmail.com";
-        String phoneNumber = "+8926207543";
+    public void booking() throws Exception {
 
         Reserve bookWithoutCard = new Reserve(driver);
         bookWithoutCard.acceptCookie()
-                .selectDestination(destination)
+                .selectDestination(getTestData().getDestinationReserve())
                 .clickArrive()
-                .selectArriveData(expArriveMonth, expArriveDate)
-                .selectDepartureData(expDepartureMonth, expDepartureDate)
+                .selectArriveData( getTestData().getExpArriveMonthReserve(), getTestData().getExpArriveDateReserve())
+                .selectDepartureData(getTestData().getExpDepartureMonthReserve(), getTestData().getExpDepartureDateReserve())
                 .runSearch()
                 .selectResults()
                 .switchTab()
-                .selectRoomQuantity(expCountRoom)
+                .selectRoomQuantity(getTestData().getExpCountReserveRoom())
                 .confirmReservation()
-                .fillInFirstNameData(firstName)
-                .fillInLastNameData(lastName)
-                .fillInEmail(email)
-                .confirmEmail(email)
+                .fillInFirstNameData(getTestData().getFirstName())
+                .fillInLastNameData(getTestData().getLastName())
+                .fillInEmail(getTestData().getEmail())
+                .confirmEmail(getTestData().getEmail())
                 .selectBookingAim()
                 .clickBookButton()
-                .fillInPhoneNumber(phoneNumber)
+                .fillInPhoneNumber(getTestData().getPhoneNumber())
                 .completeBooking();
         Assert.assertTrue(bookWithoutCard.isReservationConfirmed(), "Reservation is failed");
     }

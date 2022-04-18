@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
-public class Search {
+public class Search extends TestData {
 
     public WebDriver driver;
 
@@ -316,7 +316,9 @@ public class Search {
         return new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(driver -> driver.findElement(By.xpath("//form[@name='SearchResultsForm']"))).getText().contains("find");
     }
-}
+
+    }
+
 
 
 
