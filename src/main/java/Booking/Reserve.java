@@ -13,7 +13,7 @@ import java.time.Duration;
 import java.util.List;
 
 
-public class Reserve extends TestData{
+public class Reserve{
     public WebDriver driver;
 
     @FindBy(xpath = "//div[@id='onetrust-banner-sdk']")
