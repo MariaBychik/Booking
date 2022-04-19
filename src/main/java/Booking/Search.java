@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
-public class Search extends JsonReader {
+public class Search{
 
     public WebDriver driver;
 
