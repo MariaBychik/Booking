@@ -301,6 +301,12 @@ public class Search{
         return this;
     }
 
+    public Search switchTab() {
+        String tab = driver.getWindowHandle();
+        driver.switchTo().window(tab);
+        return this;
+    }
+
     public boolean isAttractionFound(){
             WebElement foundedMessage = new WebDriverWait(driver, Duration.ofSeconds(10))
                     .until(driver -> driver.findElement(By.xpath("//nav[@class='_806745cd2f']")));

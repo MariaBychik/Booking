@@ -5,29 +5,27 @@ import org.testng.annotations.Test;
 
 public class ReserveTest extends BaseTest {
 
-
     @Test
     // Reserve stays with valid values without authorization in the account
     public void booking() throws Exception {
-
         Reserve bookWithoutCard = new Reserve(driver);
         bookWithoutCard.acceptCookie()
-                .selectDestination(getData("destinationReserve"))
+                .selectDestination(getTestData().getDestinationReserve())
                 .clickArrive()
-                .selectArriveData(getData("expArriveMonthReserve"), getData("expArriveDateReserve"))
-                .selectDepartureData(getData("expDepartureMonthReserve"), getData("expDepartureDateReserve"))
+                .selectArriveData(getTestData().getExpArriveMonthReserve(), getTestData().getExpArriveDateReserve())
+                .selectDepartureData(getTestData().getExpDepartureMonthReserve(), getTestData().getExpDepartureDateReserve())
                 .runSearch()
                 .selectResults()
                 .switchTab()
-                .selectRoomQuantity(getData("expCountReserveRoom"))
+                .selectRoomQuantity(getTestData().getExpCountReserveRoom())
                 .confirmReservation()
-                .fillInFirstNameData(getData("firstName"))
-                .fillInLastNameData(getData("lastName"))
-                .fillInEmail(getData("email"))
-                .confirmEmail(getData("email"))
+                .fillInFirstNameData(getTestData().getFirstName())
+                .fillInLastNameData(getTestData().getLastName())
+                .fillInEmail(getTestData().getEmail())
+                .confirmEmail(getTestData().getEmail())
                 .selectBookingAim()
                 .clickBookButton()
-                .fillInPhoneNumber(getData("phoneNumber"))
+                .fillInPhoneNumber(getTestData().getPhoneNumber())
                 .completeBooking();
         Assert.assertTrue(bookWithoutCard.isReservationConfirmed(), "Reservation is failed");
     }

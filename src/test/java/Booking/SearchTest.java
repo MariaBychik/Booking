@@ -9,20 +9,20 @@ public class SearchTest extends BaseTest {
 
     @Test
     //Search hotels with valid values without authorization in the account
-    public void dataInputSearch() {
+    public void dataInputSearch() throws Exception {
 
         Search validSearch = new Search(driver);
         validSearch.acceptCookie()
-                .selectDestination(getData("destination"))
+                .selectDestination(getTestData().getDestination())
                 .clickArrive()
-                .selectArriveData(getData("expArriveMonth"), getData("expArriveDate"))
-                .selectDepartureData(getData("expDepartureMonth"), getData("expDepartureDate"))
+                .selectArriveData(getTestData().getExpArriveMonth(), getTestData().getExpArriveDate())
+                .selectDepartureData(getTestData().getExpDepartureMonth(), getTestData().getExpDepartureDate())
                 .selectDetails()
-                .selectAdultsQuantity(getData("expCountAdult"))
-                .selectChildren(getData("expCountChildren"), getData("expCountChildren1"), getData("expCountChildren2"))
-                .selectRoomQuantity(getData("expCountRoom"))
+                .selectAdultsQuantity(getTestData().getExpCountAdult())
+                .selectChildren(getTestData().getExpCountChildren(), getTestData().getExpCountChildren1(), getTestData().getExpCountChildren2())
+                .selectRoomQuantity(getTestData().getExpCountRoom())
                 .runSearch()
-                .selectMeals(getData("meals"));
+                .selectMeals(getTestData().getMeals());
         Assert.assertTrue(validSearch.isFoundResultSorted(), "Hotel search failed");
         validSearch.returnHomePage();
     }
@@ -34,9 +34,9 @@ public class SearchTest extends BaseTest {
 
         Search carRentals = new Search(driver);
         carRentals.selectCarTab()
-                .selectLocation(getData("location"))
+                .selectLocation(getTestData().getLocation())
                 .selectDataCarRent()
-                .selectCarRentData(getData("expStartCarRentMonth"), getData("expStartCarRentDay"))
+                .selectCarRentData(getTestData().getExpStartCarRentMonth(), getTestData().getExpStartCarRentDay())
                 .searchCar();
         Assert.assertTrue(carRentals.isCarExisted(), "Cars not found");
     }
@@ -48,9 +48,10 @@ public class SearchTest extends BaseTest {
         Search attractions = new Search(driver);
         attractions.selectAttractions()
                 .selectDestination()
-                .selectAttractionFilter(getData("city"))
+                .selectAttractionFilter(getTestData().getCity())
                 .selectAttraction();
         Assert.assertTrue(attractions.isAttractionFound(), "Attraction not found");
+        attractions.switchTab();
         attractions.returnHomePage();
     }
 }
