@@ -23,7 +23,7 @@ Write to the mail mariaB@mail.ru for any questions.
 The tests will be updated and supplemented.
 
 **License** <br/>
-This project is licensed. You are free to use this project and all of it's files.
+This project is not licensed. You are free to use this project and all of it's files.
 
 
 Feel free to give me a star if you find this project educational and beneficial. Contact me so I can create more content.
