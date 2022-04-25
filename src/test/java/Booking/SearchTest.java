@@ -11,16 +11,16 @@ public class SearchTest extends BaseTest {
 
         Search validSearch = new Search(driver);
         validSearch.acceptCookie()
-                .selectDestination(getTestData("destination"))
+                .selectDestination(getTestData().getDestination())
                 .clickArrive()
-                .selectArriveData(getTestData("expArriveMonth"), getTestData("expArriveDate"))
-                .selectDepartureData(getTestData("expDepartureMonth"), getTestData("expDepartureDate"))
+                .selectArriveData(getTestData().getExpArriveMonth(), getTestData().getExpArriveDate())
+                .selectDepartureData(getTestData().getExpDepartureMonth(), getTestData().getExpDepartureDate())
                 .selectDetails()
-                .selectAdultsQuantity(getTestData("expCountAdult"))
-                .selectChildren(getTestData("expCountChildren"), getTestData("expAgeChildren1"),getTestData("expAgeChildren2"))
-                .selectRoomQuantity(getTestData("expCountRoom"))
+                .selectAdultsQuantity(getTestData().getExpCountAdult())
+                .selectChildren(getTestData().getExpCountChildren(), getTestData().getExpAgeChildren())
+                .selectRoomQuantity(getTestData().getExpCountRoom())
                 .runSearch()
-                .selectMeals(getTestData("meals"));
+                .selectMeals(getTestData().getMeals());
         Assert.assertTrue(validSearch.isFoundResultSorted(), "Hotel search failed");
         validSearch.returnHomePage();
     }
@@ -32,9 +32,9 @@ public class SearchTest extends BaseTest {
 
         Search carRentals = new Search(driver);
         carRentals.selectCarTab()
-                .selectLocation(getTestData("location"))
+                .selectLocation(getTestData().getLocation())
                 .selectDataCarRent()
-                .selectCarRentData(getTestData("expStartCarRentMonth"), getTestData("expStartCarRentDay"))
+                .selectCarRentData(getTestData().getExpStartCarRentMonth(), getTestData().getExpStartCarRentDay())
                 .searchCar();
         Assert.assertTrue(carRentals.isCarExisted(), "Cars not found");
     }
@@ -46,7 +46,7 @@ public class SearchTest extends BaseTest {
         Search attractions = new Search(driver);
         attractions.selectAttractions()
                 .selectDestination()
-                .selectAttractionFilter(getTestData("city"))
+                .selectAttractionFilter(getTestData().getCity())
                 .selectAttraction();
         Assert.assertTrue(attractions.isAttractionFound(), "Attraction not found");
         attractions.switchTab();

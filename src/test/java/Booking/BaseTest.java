@@ -4,10 +4,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
+import java.io.File;
 import java.time.Duration;
-import java.util.Map;
+
 
 public class BaseTest {
     protected static WebDriver driver;
@@ -21,14 +22,10 @@ public class BaseTest {
         driver.get("https://www.booking.com");
     }
 
-    public String getTestData(String value) throws IOException {
-        Map<String, String> testData = ReadExcel.readExcelFile();
-        for (Map.Entry<String, String> map : testData.entrySet()) {
-            if (map.getKey().equals(value)) {
-                return map.getValue();
-            }
-        }
-        return null;
+    public static TestData getTestData() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        TestData myTestData = mapper.readValue(new File("src/test/resources/dataJson.json" ), TestData.class);
+        return myTestData;
     }
 
 

@@ -10,22 +10,22 @@ public class ReserveTest extends BaseTest {
     public void booking() throws Exception {
         Reserve bookWithoutCard = new Reserve(driver);
         bookWithoutCard.acceptCookie()
-                .selectDestination(getTestData("destinationReserve"))
+                .selectDestination(getTestData().getDestinationReserve())
                 .clickArrive()
-                .selectArriveData(getTestData("expArriveMonthReserve"), getTestData("expArriveDateReserve"))
-                .selectDepartureData(getTestData("expDepartureMonthReserve"), getTestData("expDepartureDateReserve"))
+                .selectArriveData(getTestData().getExpArriveMonthReserve(), getTestData().getExpArriveDateReserve())
+                .selectDepartureData(getTestData().getExpDepartureMonthReserve(), getTestData().getExpDepartureDateReserve())
                 .runSearch()
                 .selectResults()
                 .switchTab()
-                .selectRoomQuantity(getTestData("expCountReserveRoom"))
+                .selectRoomQuantity(getTestData().getExpCountReserveRoom())
                 .confirmReservation()
-                .fillInFirstNameData(getTestData("firstName"))
-                .fillInLastNameData(getTestData("lastName"))
-                .fillInEmail(getTestData("email"))
-                .confirmEmail(getTestData("email"))
+                .fillInFirstNameData(getTestData().getFirstName())
+                .fillInLastNameData(getTestData().getLastName())
+                .fillInEmail(getTestData().getEmail())
+                .confirmEmail(getTestData().getEmail())
                 .selectBookingAim()
                 .clickBookButton()
-                .fillInPhoneNumber(getTestData("phoneNumber"))
+                .fillInPhoneNumber(getTestData().getPhoneNumber())
                 .completeBooking();
         Assert.assertTrue(bookWithoutCard.isReservationConfirmed(), "Reservation is failed");
     }

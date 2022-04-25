@@ -10,13 +10,14 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Search{
+public class Search {
 
     public WebDriver driver;
 
-    @FindBy(xpath="//button[@id='onetrust-accept-btn-handler']")
+    @FindBy(xpath = "//button[@id='onetrust-accept-btn-handler']")
     WebElement acceptButton;
 
     @FindBy(xpath = "//*[@name='ss']")
@@ -94,8 +95,7 @@ public class Search{
         try {
             new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.elementToBeClickable(bannerAccept));
             acceptButton.click();
-        }
-        catch(TimeoutException e) {
+        } catch (TimeoutException e) {
             e.printStackTrace();
         }
         return this;
@@ -170,22 +170,24 @@ public class Search{
         return this;
     }
 
-    public Search selectChildren(String expCountChildren, String expAgeChildren1, String expAgeChildren2) {
+    public Search selectChildren(String expCountChildren, List <String> expAgeChildren) {
         while (true) {
             String countChildren = childrenTextBox.getText();
+            List <String> age = new ArrayList<>(expAgeChildren);
             if (countChildren.equals(expCountChildren)) {
                 break;
             } else {
                 addChildrenButton.click();
-                Select ageChildren1 = new Select(driver.findElement(By.xpath("//select[@name='age']")));
-                ageChildren1.selectByValue(expAgeChildren1);
-                addChildrenButton.click();
-                Select ageChildren2 = new Select(driver.findElement(By.xpath("//select[@name='age'][2]")));
-                ageChildren2.selectByValue(expAgeChildren2);
-            }
+                Select ageChildren = new Select(driver.findElement(By.xpath("//select[@name='age'][last()]")));
+                for (int i = 1; i < 18; i++) {
+                    ageChildren.selectByValue(age.get(i));
+                    break;
+                    }
+                }
             }
         return this;
     }
+
 
     public Search selectRoomQuantity(String expCountRoom) {
         while (true) {
@@ -206,14 +208,14 @@ public class Search{
 
 
     public Search selectMeals(String meals) {
-     String xpath = "//div[@data-filters-group='mealplan']/descendant::*[contains(text(), '%s')]";
+        String xpath = "//div[@data-filters-group='mealplan']/descendant::*[contains(text(), '%s')]";
         if (!driver.findElement(By.xpath(String.format(xpath, meals))).isSelected()) {
             driver.findElement(By.xpath(String.format(xpath, meals))).click();
         }
         return this;
     }
 
-    public boolean isFoundResultSorted(){
+    public boolean isFoundResultSorted() {
         WebElement propertiesMessage = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(driver -> driver.findElement(By.xpath("//div[@class='efdb2b543b']")));
         return propertiesMessage.getText().contains("properties found");
@@ -224,10 +226,10 @@ public class Search{
         return this;
     }
 
-    public Search selectCarTab()  {
-            carTab.click();
-            return this;
-        }
+    public Search selectCarTab() {
+        carTab.click();
+        return this;
+    }
 
     public Search selectLocation(String strLocation) {
         carSearchField.sendKeys(strLocation);
@@ -261,33 +263,32 @@ public class Search{
         return this;
     }
 
-        public Search searchCar() {
-            searchCarButton.click();
-            return this;
-        }
+    public Search searchCar() {
+        searchCarButton.click();
+        return this;
+    }
 
-        public boolean isCarExisted(){
+    public boolean isCarExisted() {
         boolean carIsAvailable = false;
-        try{
+        try {
             carIsAvailable = isCarAvailable();
-        }
-        catch(TimeoutException e){
+        } catch (TimeoutException e) {
             carIsAvailable = isCarFound();
         }
         return carIsAvailable;
     }
 
-        public Search selectAttractions(){
-           attractionsButton.click();
-           return this;
-        }
+    public Search selectAttractions() {
+        attractionsButton.click();
+        return this;
+    }
 
-        public Search selectDestination(){
-          destinationTab.click();
-          return this;
-        }
+    public Search selectDestination() {
+        destinationTab.click();
+        return this;
+    }
 
-        public Search selectAttractionFilter(String city) {
+    public Search selectAttractionFilter(String city) {
         String xpath = "//div[@class='_85d06581c8']/descendant::*[contains(text(), '%s')]";
         if (!driver.findElement(By.xpath(String.format(xpath, city))).isSelected()) {
             driver.findElement(By.xpath(String.format(xpath, city))).click();
@@ -295,7 +296,7 @@ public class Search{
         return this;
     }
 
-    public Search selectAttraction(){
+    public Search selectAttraction() {
         viewButton.click();
         return this;
     }
@@ -306,10 +307,10 @@ public class Search{
         return this;
     }
 
-    public boolean isAttractionFound(){
-            WebElement foundedMessage = new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(driver -> driver.findElement(By.xpath("//nav[@class='_806745cd2f']")));
-            return foundedMessage.getText().contains("Attractions");
+    public boolean isAttractionFound() {
+        WebElement foundedMessage = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> driver.findElement(By.xpath("//nav[@class='_806745cd2f']")));
+        return foundedMessage.getText().contains("Attractions");
     }
 
     private boolean isCarAvailable() {
@@ -317,12 +318,13 @@ public class Search{
                 .until(driver -> driver.findElement(By.xpath("//div[@data-testid='page-title']"))).getText().contains("available");
     }
 
-    private boolean isCarFound(){
+    private boolean isCarFound() {
         return new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(driver -> driver.findElement(By.xpath("//form[@name='SearchResultsForm']"))).getText().contains("find");
     }
+}
 
-    }
+
 
 
 
