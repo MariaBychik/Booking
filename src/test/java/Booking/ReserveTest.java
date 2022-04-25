@@ -10,26 +10,28 @@ public class ReserveTest extends BaseTest {
     public void booking() throws Exception {
         Reserve bookWithoutCard = new Reserve(driver);
         bookWithoutCard.acceptCookie()
-                .selectDestination(getTestData(15))
+                .selectDestination(getTestData("destinationReserve"))
                 .clickArrive()
-                .selectArriveData(getTestData(16), getTestData(17))
-                .selectDepartureData(getTestData(18), getTestData(19))
+                .selectArriveData(getTestData("expArriveMonthReserve"), getTestData("expArriveDateReserve"))
+                .selectDepartureData(getTestData("expDepartureMonthReserve"), getTestData("expDepartureDateReserve"))
                 .runSearch()
                 .selectResults()
                 .switchTab()
-                .selectRoomQuantity(getTestData(20))
+                .selectRoomQuantity(getTestData("expCountReserveRoom"))
                 .confirmReservation()
-                .fillInFirstNameData(getTestData(21))
-                .fillInLastNameData(getTestData(22))
-                .fillInEmail(getTestData(23))
-                .confirmEmail(getTestData(24))
+                .fillInFirstNameData(getTestData("firstName"))
+                .fillInLastNameData(getTestData("lastName"))
+                .fillInEmail(getTestData("email"))
+                .confirmEmail(getTestData("email"))
                 .selectBookingAim()
                 .clickBookButton()
-                .fillInPhoneNumber(getTestData(25))
+                .fillInPhoneNumber(getTestData("phoneNumber"))
                 .completeBooking();
         Assert.assertTrue(bookWithoutCard.isReservationConfirmed(), "Reservation is failed");
     }
 }
+
+
 
 
 

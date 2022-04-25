@@ -182,9 +182,8 @@ public class Search{
                 addChildrenButton.click();
                 Select ageChildren2 = new Select(driver.findElement(By.xpath("//select[@name='age'][2]")));
                 ageChildren2.selectByValue(expAgeChildren2);
-
             }
-        }
+            }
         return this;
     }
 

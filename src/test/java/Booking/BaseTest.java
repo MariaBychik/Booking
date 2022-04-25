@@ -1,13 +1,13 @@
 package Booking;
 
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
-
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Map;
 
 public class BaseTest {
     protected static WebDriver driver;
@@ -21,22 +21,25 @@ public class BaseTest {
         driver.get("https://www.booking.com");
     }
 
-    public String getTestData(int value) throws IOException {
-        ExcelLibrary obj = new ExcelLibrary();
-        String dataString = obj.readData("Sheet1", value, 1);
-        return dataString;
+    public String getTestData(String value) throws IOException {
+        Map<String, String> testData = ReadExcel.readExcelFile();
+        for (Map.Entry<String, String> map : testData.entrySet()) {
+            if (map.getKey().equals(value)) {
+                return map.getValue();
+            }
+        }
+        return null;
     }
-}
 
 
-/*
     @AfterSuite
     public void TeardownTest() {
         driver.quit();
     }
 }
 
- */
+
+
 
 
 
