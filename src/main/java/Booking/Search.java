@@ -170,21 +170,20 @@ public class Search {
         return this;
     }
 
-    public Search selectChildren(String expCountChildren, List <String> expAgeChildren) {
+    public Search selectChildren(String expCountChildren, String expAgeChildren1, String expAgeChildren2) {
         while (true) {
             String countChildren = childrenTextBox.getText();
-            List <String> age = new ArrayList<>(expAgeChildren);
             if (countChildren.equals(expCountChildren)) {
                 break;
             } else {
                 addChildrenButton.click();
-                Select ageChildren = new Select(driver.findElement(By.xpath("//select[@name='age'][last()]")));
-                for (int i = 1; i < 18; i++) {
-                    ageChildren.selectByValue(age.get(i));
-                    break;
-                    }
-                }
+                Select ageChildren1 = new Select(driver.findElement(By.xpath("//select[@name='age']")));
+                ageChildren1.selectByValue(expAgeChildren1);
+                addChildrenButton.click();
+                Select ageChildren2 = new Select(driver.findElement(By.xpath("//select[@name='age'][2]")));
+                ageChildren2.selectByValue(expAgeChildren2);
             }
+        }
         return this;
     }
 

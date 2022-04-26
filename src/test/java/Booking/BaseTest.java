@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.time.Duration;
+import java.util.Map;
 
 
 public class BaseTest {
@@ -22,10 +23,15 @@ public class BaseTest {
         driver.get("https://www.booking.com");
     }
 
-    public static TestData getTestData() throws Exception {
+    public static String getTestData(String parameter) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        TestData myTestData = mapper.readValue(new File("src/test/resources/dataJson.json" ), TestData.class);
-        return myTestData;
+        Map<String, String> map = mapper.readValue(new File("src/test/resources/dataJson.json"), Map.class);
+        //Print the content of the json file
+        System.out.println("Map is " + map);
+        //Print the size of the json file
+        System.out.println("Map Size is " + map.size());
+        return map.get(parameter);
+
     }
 
 
