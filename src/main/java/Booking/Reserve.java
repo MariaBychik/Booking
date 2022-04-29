@@ -1,5 +1,6 @@
 package Booking;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -75,6 +76,7 @@ public class Reserve{
         this.driver = driver;
     }
 
+    @Step("Accepting cookies if they exist on the page")
     public Reserve acceptCookie() {
         try {
             new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.elementToBeClickable(bannerAccept));
@@ -86,6 +88,7 @@ public class Reserve{
         return this;
     }
 
+    @Step("Selection a destination: {0}")
     public Reserve selectDestination(String destination) {
         destinationTextBox.sendKeys(destination);
         return this;
@@ -96,6 +99,7 @@ public class Reserve{
         return this;
     }
 
+    @Step("Selection the month of arrival: {0} and the day of arrival: {1}")
     public Reserve selectArriveData(String expArriveMonth, String expArriveDate) {
         while (true) {
             String monthArrive = monthTextField.getText();
@@ -117,6 +121,7 @@ public class Reserve{
         return this;
     }
 
+    @Step("Selection the month of departure: {0} and the day of departure: {1}")
     public Reserve selectDepartureData(String expDepartureMonth, String expDepartureDate) {
         while (true) {
             String monthDeparture = monthTextField.getText();
@@ -138,11 +143,13 @@ public class Reserve{
         return this;
     }
 
+    @Step("Click Search button")
     public Reserve runSearch() {
         searchButton.click();
         return this;
     }
 
+    @Step("Select a hotel based on search results")
     public Reserve selectResults() {
         searchResults.click();
         return this;
@@ -155,6 +162,7 @@ public class Reserve{
         return this;
     }
 
+    @Step("Selection quantity of room: {0}")
     public Reserve selectRoomQuantity(String expCountRoom){
         dropDownRoomButton.click();
         String selectCountRoom = "(//select[@class='hprt-nos-select js-hprt-nos-select'])[1]/descendant::*[contains(text(),'%s')][1]";
@@ -163,54 +171,69 @@ public class Reserve{
         return this;
     }
 
+    @Step("Click Confirm button")
     public Reserve confirmReservation(){
         reserveConfirmButton.click();
         return this;
     }
 
+    @Step("Fill in first name: {0}")
     public Reserve fillInFirstNameData(String firstName){
         firstNameField.sendKeys(firstName);
         return this;
     }
 
+    @Step("Fill in last name: {0}")
     public Reserve fillInLastNameData(String lastName){
         lastNameField.sendKeys(lastName);
         return this;
     }
 
+    @Step("Fill in email: {0}")
     public Reserve fillInEmail(String email){
         emailField.sendKeys(email);
         return this;
     }
 
+    @Step("Confirm email: {0}")
     public Reserve confirmEmail(String email){
         emailConfField.sendKeys(email);
         return this;
     }
 
+    @Step("Select booking aim")
     public Reserve selectBookingAim(){
         radioButton.click();
         return this;
     }
 
+    @Step("Click Book button")
     public Reserve clickBookButton(){
         bookButton.click();
         return this;
     }
 
+    @Step("Fill in phone number: {0}")
     public Reserve fillInPhoneNumber(String phoneNumber){
         phoneTextBox.sendKeys(phoneNumber);
         return this;
     }
 
+    @Step("Click Complete button")
     public Reserve completeBooking(){
         completeButton.click();
         return this;
     }
 
+    @Step("Verify that reservation is confirmed")
     public boolean isReservationConfirmed(){
         WebElement reservationMessage = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(driver -> driver.findElement(By.xpath("//span[@class='conf-page-gem-offers__badge-text']")));
        return reservationMessage.getText().contains("is confirmed");
+    }
+
+    public Reserve returnHomePage() {
+        driver.navigate().to("https://www.booking.com");
+        return this;
     }
 }

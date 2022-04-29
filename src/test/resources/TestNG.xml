@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Testing Booking">
+            <listeners>
+                <listener class-name="utils.Listeners.TestListener"/>
+            </listeners>
+    <test name="Tests">
+        <classes>
+            <class name ="Booking.SearchTest"/>
+            <class name="Booking.ReserveTest"/>
+            <class name="Booking.RegistrationTest"/>
+        </classes>
+    </test>
+</suite>

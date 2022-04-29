@@ -2,6 +2,7 @@ package Booking;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +14,9 @@ import java.util.Map;
 
 public class BaseTest {
     protected static WebDriver driver;
+    public WebDriver getDriver() {
+        return driver;
+    }
 
     @BeforeSuite
     public void setup() {
@@ -23,13 +27,10 @@ public class BaseTest {
         driver.get("https://www.booking.com");
     }
 
+
     public static String getTestData(String parameter) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         Map<String, String> map = mapper.readValue(new File("src/test/resources/dataJson.json"), Map.class);
-        //Print the content of the json file
-        System.out.println("Map is " + map);
-        //Print the size of the json file
-        System.out.println("Map Size is " + map.size());
         return map.get(parameter);
 
     }

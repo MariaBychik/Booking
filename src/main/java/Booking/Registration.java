@@ -1,5 +1,6 @@
 package Booking;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -44,6 +45,7 @@ public class Registration {
         this.driver = driver;
     }
 
+    @Step("Accepting cookies if they exist on the page")
     public Registration acceptCookie() {
         try {
             new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.elementToBeClickable(bannerAccept));
@@ -58,16 +60,19 @@ public class Registration {
         return this;
     }
 
+    @Step("Fill in email: {0}")
     public Registration inputEmail(String email) {
         inputTextBox.sendKeys(email);
         return this;
     }
 
+    @Step("Click Continue button")
     public Registration continueRegistration() {
         continueButton.click();
         return this;
     }
 
+    @Step("Fill in new password: {0}")
     public Registration enterNewPassword(String passwordNew) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(passwordNewField));
@@ -75,11 +80,13 @@ public class Registration {
         return this;
     }
 
+    @Step("Fill in confirmed password: {0}")
     public Registration enterConfirmedPassword(String passwordConfirmed) {
         passwordConfirmedField.sendKeys(passwordConfirmed);
         return this;
     }
 
+    @Step("Click and press confirmation button")
     public Registration confirmRegistration() {
         continueButton.click();
         try {
@@ -92,10 +99,16 @@ public class Registration {
             return this;
     }
 
+    @Step("Verify that user is logged in")
     public boolean isUserLoggedIn(){
         WebElement accountLink = new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(driver -> driver.findElement(By.xpath("//span[@id='profile-menu-trigger--title']")));
         return accountLink.getText().contains("Your account");
+    }
+
+    public Registration returnHomePage() {
+        driver.navigate().to("https://www.booking.com");
+        return this;
     }
  }
 

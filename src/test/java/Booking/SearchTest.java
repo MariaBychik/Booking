@@ -1,15 +1,25 @@
 package Booking;
 
+import io.qameta.allure.Description;
 import org.testng.Assert;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import utils.Listeners.TestListener;
 
+
+@Listeners({TestListener.class})
 public class SearchTest extends BaseTest {
 
-    @Test
+
+    @Test (priority = 0, description="Search hotels with valid values")
+    @Description("Test Description: Search test without authorization in the account")
+
     //Search hotels with valid values without authorization in the account
     public void dataInputSearch() throws Exception {
 
         Search validSearch = new Search(driver);
+        validSearch.returnHomePage();
+        validSearch.returnHomePage();
         validSearch.acceptCookie()
                 .selectDestination(getTestData("destination"))
                 .clickArrive()
@@ -25,8 +35,8 @@ public class SearchTest extends BaseTest {
         validSearch.returnHomePage();
     }
 
-
-    @Test
+    @Test(priority = 2,description="Search car rentals with valid values")
+    @Description("Test Description: Search test without authorization in the account")
     //Search cars with valid values without authorization in the account
     public void searchCarRentals() throws Exception {
 
@@ -37,9 +47,12 @@ public class SearchTest extends BaseTest {
                 .selectCarRentData(getTestData("expStartCarRentMonth"), getTestData("expStartCarRentDay"))
                 .searchCar();
         Assert.assertTrue(carRentals.isCarExisted(), "Cars not found");
+        carRentals.returnHomePage();
     }
 
-    @Test
+
+    @Test (priority = 1,description="Search attractions with valid values")
+    @Description("Test Description: Search test without authorization in the account")
     //Search attractions with valid values without authorization in the account
     public void searchAttractions() throws Exception {
 
