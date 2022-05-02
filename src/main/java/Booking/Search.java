@@ -319,10 +319,11 @@ public class Search {
     }
 
     @Step("Verify that attractions are found")
-    public boolean isAttractionFound() {
+    public boolean GetAttractionText() {
         WebElement foundedMessage = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(driver -> driver.findElement(By.xpath("//nav[@class='_806745cd2f']")));
-        return foundedMessage.getText().contains("Attractions");
+        boolean actualMessage = foundedMessage.getText().contains("Attractions");
+        return actualMessage;
     }
 
     @Step("Verify that cars are available")

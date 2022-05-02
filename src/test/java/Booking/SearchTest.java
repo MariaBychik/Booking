@@ -41,6 +41,7 @@ public class SearchTest extends BaseTest {
     public void searchCarRentals() throws Exception {
 
         Search carRentals = new Search(driver);
+        carRentals.returnHomePage();
         carRentals.selectCarTab()
                 .selectLocation(getTestData("location"))
                 .selectDataCarRent()
@@ -61,7 +62,7 @@ public class SearchTest extends BaseTest {
                 .selectDestination()
                 .selectAttractionFilter(getTestData("city"))
                 .selectAttraction();
-        Assert.assertTrue(attractions.isAttractionFound(), "Attraction not found");
+        Assert.assertEquals(attractions.GetAttractionText(),true);
         attractions.switchTab();
         attractions.returnHomePage();
     }
