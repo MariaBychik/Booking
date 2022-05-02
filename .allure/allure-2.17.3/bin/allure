@@ -199,7 +199,7 @@ fi
 #   * put everything else in single quotes, so that it's not re-expanded.
 
 set -- \
-        \
+CLASSPATH=%APP_HOME%\lib\*;%APP_HOME%\lib\config\
         io.qameta.allure.CommandLine \
         "$@"
 
